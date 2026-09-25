@@ -1,0 +1,102 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile and RBAC role definition.",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "The user's email address.",
+          "maxLength": 254
+        },
+        "role": {
+          "type": "string",
+          "description": "The user's role in the system.",
+          "enum": ["admin", "user", "farmer"]
+        },
+        "name": {
+          "type": "string",
+          "description": "The user's display name.",
+          "maxLength": 128
+        },
+        "status": {
+          "type": "string",
+          "description": "The approval status of the user account.",
+          "enum": ["pending", "approved", "rejected"]
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp of account creation."
+        }
+      },
+      "required": ["email", "role", "name", "status"]
+    },
+    "Grievance": {
+      "title": "Grievance",
+      "description": "Farmer or landowner objection and grievance submission.",
+      "type": "object",
+      "properties": {
+        "parcelId": {
+          "type": "string",
+          "description": "The target parcel identifier.",
+          "maxLength": 64
+        },
+        "farmerName": {
+          "type": "string",
+          "description": "Name of the claimant or farmer.",
+          "maxLength": 128
+        },
+        "farmerPhone": {
+          "type": "string",
+          "description": "Contact telephone number.",
+          "maxLength": 32
+        },
+        "surveyNumber": {
+          "type": "string",
+          "description": "Cadastral survey or gat number.",
+          "maxLength": 64
+        },
+        "village": {
+          "type": "string",
+          "description": "Village name.",
+          "maxLength": 128
+        },
+        "objectionType": {
+          "type": "string",
+          "description": "Category of objection or grievance.",
+          "maxLength": 128
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed grievance description.",
+          "maxLength": 2000
+        },
+        "status": {
+          "type": "string",
+          "description": "Current status of the grievance inquiry.",
+          "enum": ["Submitted", "Under Verification", "Hearing Scheduled", "Resolved"]
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Submission ISO timestamp."
+        }
+      },
+      "required": ["parcelId", "farmerName", "surveyNumber", "village", "objectionType", "description", "status"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/User"
+      },
+      "description": "Stores user profiles, roles, and admin approval status."
+    },
+    "grievances/{grievanceId}": {
+      "schema": {
+        "$ref": "#/entities/Grievance"
+      },
+      "description": "Stores landowner grievances and objection filings."
+    }
+  }
+}

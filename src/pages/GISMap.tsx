@@ -1,0 +1,76 @@
+import React, { useState, useMemo } from "react";
+import AppLayout from "../components/Layout";
+import { staticParcels, RiskLevel } from "../lib/data";
+import { Filter } from "lucide-react";
+import MapView from "../components/ParcelMap";
+
+export default function GISMapPage() {
+  const [riskFilter, setRiskFilter] = useState<RiskLevel | "All">("All");
+
+  const filteredParcels = useMemo(() => {
+    if (riskFilter === "All") return staticParcels;
+    return staticParcels.filter((p) => p.riskLevel === riskFilter);
+  }, [riskFilter]);
+
+  return (
+    <AppLayout>
+      <div className="flex flex-col h-[calc(100vh-8rem)] space-y-3">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-2 border-b border-[#e5e2da] dark:border-[#212c24]">
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#181c19] dark:text-[#eff3ef]">
+              GIS Parcel Map
+            </h1>
+            <p className="text-xs text-[#58615a] dark:text-[#95a398] mt-0.5">
+              Geographical distribution of land plots and identified risk zones.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2 bg-white dark:bg-[#151e18] border border-[#dcd7cd] dark:border-[#2b3a30] px-3 py-1.5 rounded-md shadow-2xs">
+            <Filter className="h-3.5 w-3.5 text-[#58615a]" />
+            <span className="text-xs text-[#58615a] dark:text-[#95a398]">Filter:</span>
+            <select
+              value={riskFilter}
+              onChange={(e) => setRiskFilter(e.target.value as any)}
+              className="bg-transparent text-xs font-semibold text-[#181c19] dark:text-[#eff3ef] border-none focus:ring-0 cursor-pointer outline-none"
+            >
+              <option value="All">All Parcels ({staticParcels.length})</option>
+              <option value="High">High Risk Only</option>
+              <option value="Medium">Medium Risk Only</option>
+              <option value="Low">Low Risk Only</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Map Container */}
+        <div className="flex-1 rounded-lg border border-[#e5e2da] dark:border-[#222f26] bg-[#f0eee8] dark:bg-[#101712] flex flex-col overflow-hidden relative shadow-2xs">
+          {/* Minimalist Legend */}
+          <div className="absolute top-3 right-3 z-10 bg-white/95 dark:bg-[#151e18]/95 backdrop-blur-xs border border-[#e5e2da] dark:border-[#28372d] p-3 rounded-lg shadow-md text-xs">
+            <div className="font-semibold text-[#181c19] dark:text-[#eff3ef] mb-2 pb-1 border-b border-[#eeebe3] dark:border-[#202b23]">
+              Risk Legend
+            </div>
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#a63529]" />
+                <span className="text-[#363e38] dark:text-[#d3ded5]">High Risk (&gt;75)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#a86927]" />
+                <span className="text-[#363e38] dark:text-[#d3ded5]">Medium Risk (41-75)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#24613b]" />
+                <span className="text-[#363e38] dark:text-[#d3ded5]">Low Risk (&le;40)</span>
+              </div>
+            </div>
+            <div className="mt-2.5 pt-1.5 border-t border-[#eeebe3] dark:border-[#202b23] text-[11px] text-[#6e7770] dark:text-[#8c9c90]">
+              Showing {filteredParcels.length} plots
+            </div>
+          </div>
+
+          <MapView allParcels={filteredParcels} />
+        </div>
+      </div>
+    </AppLayout>
+  );
+}

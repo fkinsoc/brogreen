@@ -1,0 +1,90 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global safety net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+    
+    // Primitive Definitions
+    function isSignedIn() { 
+      return request.auth != null; 
+    }
+    function existing() { 
+      return resource.data; 
+    }
+    function incoming() { 
+      return request.resource.data; 
+    }
+    function isAdmin() { 
+      return isSignedIn() && (request.auth.token.email == 'klassic.ig@gmail.com' || (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin')); 
+    }
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+    function isValidId(id) { 
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); 
+    }
+
+    // Validation Blueprint for User
+    function isValidUser(data) {
+      return data.keys().hasAll(['email', 'role', 'name', 'status']) &&
+             data.keys().hasOnly(['email', 'role', 'name', 'status', 'createdAt']) &&
+             data.email is string && data.email.size() <= 254 &&
+             data.role is string && (data.role == 'admin' || data.role == 'user' || data.role == 'farmer') &&
+             data.status is string && (data.status == 'pending' || data.status == 'approved' || data.status == 'rejected') &&
+             data.name is string && data.name.size() <= 128 &&
+             (!('createdAt' in data) || (data.createdAt is string && data.createdAt.size() <= 64));
+    }
+
+    // Validation Blueprint for Grievance
+    function isValidGrievance(data) {
+      return data.keys().hasAll(['parcelId', 'farmerName', 'surveyNumber', 'village', 'objectionType', 'description', 'status']) &&
+             data.keys().hasOnly(['parcelId', 'farmerName', 'farmerPhone', 'surveyNumber', 'village', 'objectionType', 'description', 'status', 'createdAt', 'submittedBy']) &&
+             data.parcelId is string && data.parcelId.size() <= 64 &&
+             data.farmerName is string && data.farmerName.size() <= 128 &&
+             data.surveyNumber is string && data.surveyNumber.size() <= 64 &&
+             data.village is string && data.village.size() <= 128 &&
+             data.objectionType is string && data.objectionType.size() <= 128 &&
+             data.description is string && data.description.size() <= 2000 &&
+             data.status is string && (data.status in ['Submitted', 'Under Verification', 'Hearing Scheduled', 'Resolved']) &&
+             (!('farmerPhone' in data) || (data.farmerPhone is string && data.farmerPhone.size() <= 32)) &&
+             (!('createdAt' in data) || (data.createdAt is string && data.createdAt.size() <= 64)) &&
+             (!('submittedBy' in data) || (data.submittedBy is string && data.submittedBy.size() <= 128));
+    }
+
+    // Users Collection
+    match /users/{userId} {
+      // Users can read their own document, admins can read all
+      allow get: if isValidId(userId) && (isOwner(userId) || isAdmin());
+      // Admins can list users
+      allow list: if isAdmin();
+      
+      // Users can create their own document with pending status (unless bootstrapped admin)
+      allow create: if isValidId(userId) && 
+                       isOwner(userId) && 
+                       isValidUser(incoming()) && (
+                         (request.auth.token.email == 'klassic.ig@gmail.com') ||
+                         (incoming().role == 'user' && incoming().status == 'pending')
+                       );
+                       
+      // Regular users can only update their display name; only admins can change role and status
+      allow update: if isValidId(userId) && isSignedIn() && (
+        (isAdmin() && isValidUser(incoming())) ||
+        (isOwner(userId) && incoming().diff(existing()).affectedKeys().hasOnly(['name']) && isValidUser(incoming()))
+      );
+      
+      // No deletes allowed
+      allow delete: if false;
+    }
+
+    // Grievances Collection for Farmer Portal
+    match /grievances/{grievanceId} {
+      allow get, list: if isValidId(grievanceId) || isSignedIn();
+      allow create: if isValidId(grievanceId) && isValidGrievance(incoming()) && incoming().status == 'Submitted';
+      allow update: if isValidId(grievanceId) && isAdmin() && isValidGrievance(incoming());
+      allow delete: if false;
+    }
+  }
+}

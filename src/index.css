@@ -1,0 +1,98 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --color-forest-950: #0a130e;
+  --color-forest-900: #121e17;
+  --color-forest-800: #192c21;
+  --color-forest-700: #223c2e;
+  --color-forest-600: #2d503d;
+  --color-forest-500: #3c6b52;
+  --color-forest-100: #eaf3ed;
+  --color-forest-50: #f4f8f5;
+
+  --color-walnut-900: #2b1f17;
+  --color-walnut-800: #3d2c20;
+  --color-walnut-700: #543d2c;
+  --color-walnut-600: #6e503a;
+  --color-walnut-500: #8c674b;
+  --color-walnut-100: #f5eee7;
+  --color-walnut-50: #faf6f2;
+
+  --color-background-primary: var(--bg-primary);
+  --color-background-secondary: var(--bg-secondary);
+  --color-background-card: var(--bg-card);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-card: var(--border-card);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+}
+
+:root {
+  --bg-primary: #f8f8f5;
+  --bg-secondary: #f0f0eb;
+  --bg-card: #ffffff;
+  --bg-sidebar: #132219;
+  --border-subtle: #e2dfd7;
+  --border-card: #e5e2da;
+  --text-primary: #181c19;
+  --text-secondary: #58615a;
+  --text-muted: #828c84;
+  --accent-green: #1f4230;
+  --accent-brown: #6b4d37;
+}
+
+.dark {
+  --bg-primary: #0d130f;
+  --bg-secondary: #121a15;
+  --bg-card: #151e18;
+  --bg-sidebar: #0a0f0c;
+  --border-subtle: #212c24;
+  --border-card: #28372d;
+  --text-primary: #eff3ef;
+  --text-secondary: #95a398;
+  --text-muted: #6e7c71;
+  --accent-green: #37634b;
+  --accent-brown: #8e684a;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Tabular figures for data integrity */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Crisp, unobtrusive scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(80, 100, 85, 0.2);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(80, 100, 85, 0.4);
+}
+
+::selection {
+  background-color: #274836;
+  color: #ffffff;
+}
