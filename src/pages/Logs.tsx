@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import AppLayout from "../components/Layout";
-import { Download, Filter, TerminalSquare } from "lucide-react";
+import { Download, Filter, Activity } from "lucide-react";
 import { format } from "date-fns";
 
 type LogLevel = "INFO" | "WARN" | "ERROR" | "SYSTEM";
@@ -107,8 +107,8 @@ export default function LogsPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-2 border-b border-[#e5e2da] dark:border-[#212c24]">
           <div>
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#181c19] dark:text-[#eff3ef] flex items-center gap-2">
-              <TerminalSquare className="w-5 h-5 text-[#1f4230] dark:text-[#82c499]" />
-              <span>System Logs</span>
+              <Activity className="w-5 h-5 text-[#1f4230] dark:text-[#82c499]" />
+              <span>System Audit Logs</span>
             </h1>
             <p className="text-xs text-[#58615a] dark:text-[#95a398] mt-0.5">
               Live audit trail of background workers, sync events, and model runs.
@@ -118,7 +118,7 @@ export default function LogsPage() {
           <div className="flex items-center gap-2">
             <button
               onClick={handleExport}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#1f4230] hover:bg-[#163324] text-white text-xs font-semibold rounded transition-colors shadow-2xs"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#1f4230] hover:bg-[#163324] text-white text-xs font-semibold rounded-xs transition-colors cursor-pointer"
             >
               <Download className="w-3.5 h-3.5" />
               <span>Export Logs</span>
@@ -127,7 +127,7 @@ export default function LogsPage() {
         </div>
 
         {/* Log Viewer Card */}
-        <div className="flex-1 rounded-lg border border-[#e5e2da] dark:border-[#222f26] bg-white dark:bg-[#121914] flex flex-col overflow-hidden shadow-2xs">
+        <div className="flex-1 rounded-xs border border-[#e5e2da] dark:border-[#222f26] bg-white dark:bg-[#121914] flex flex-col overflow-hidden">
           {/* Toolbar */}
           <div className="p-2.5 border-b border-[#e5e2da] dark:border-[#212c24] flex justify-between items-center bg-[#faf9f6] dark:bg-[#101612]">
             <div className="flex items-center gap-2">
@@ -163,7 +163,7 @@ export default function LogsPage() {
                 </div>
                 <div className="flex-shrink-0 w-14">
                   <span
-                    className={`inline-block px-1.5 py-0.2 rounded text-[10px] font-bold border tracking-wider ${getLevelColor(
+                    className={`inline-block px-1.5 py-0.2 rounded-xs text-[10px] font-bold border tracking-wider ${getLevelColor(
                       log.level
                     )}`}
                   >

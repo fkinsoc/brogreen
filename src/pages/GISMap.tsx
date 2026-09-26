@@ -28,7 +28,7 @@ export default function GISMapPage() {
             </p>
           </div>
 
-          <div className="flex items-center gap-2 bg-white dark:bg-[#151e18] border border-[#dcd7cd] dark:border-[#2b3a30] px-3 py-1.5 rounded-md shadow-2xs">
+          <div className="flex items-center gap-2 bg-white dark:bg-[#151e18] border border-[#dcd7cd] dark:border-[#2b3a30] px-3 py-1.5 rounded-xs">
             <Filter className="h-3.5 w-3.5 text-[#58615a]" />
             <span className="text-xs text-[#58615a] dark:text-[#95a398]">{t('map.filter')}</span>
             <select
@@ -45,27 +45,27 @@ export default function GISMapPage() {
         </div>
 
         {/* Map Container */}
-        <div className="flex-1 rounded-lg border border-[#e5e2da] dark:border-[#222f26] bg-[#f0eee8] dark:bg-[#101712] flex flex-col overflow-hidden relative shadow-2xs">
-          {/* Minimalist Legend */}
-          <div className="absolute top-3 right-3 z-10 bg-white/95 dark:bg-[#151e18]/95 backdrop-blur-xs border border-[#e5e2da] dark:border-[#28372d] p-3 rounded-lg shadow-md text-xs">
-            <div className="font-semibold text-[#181c19] dark:text-[#eff3ef] mb-2 pb-1 border-b border-[#eeebe3] dark:border-[#202b23]">
+        <div className="flex-1 rounded-xs border border-[#e5e2da] dark:border-[#222f26] bg-[#101712] flex flex-col overflow-hidden relative">
+          {/* Legend: Opaque, crisp, no blur, no drop shadows */}
+          <div className="absolute top-3 right-3 z-10 bg-[#151e18] border border-[#28372d] p-3 rounded-xs text-xs">
+            <div className="font-semibold text-[#eff3ef] mb-2 pb-1 border-b border-[#202b23]">
               {t('map.riskLegend')}
             </div>
             <div className="space-y-1.5">
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#a63529]" />
-                <span className="text-[#363e38] dark:text-[#d3ded5]">{t('map.highRiskLegend')}</span>
+                <span className="w-2.5 h-2.5 rounded-none bg-[#a63529]" />
+                <span className="text-[#d3ded5]">{t('map.highRiskLegend')}</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#a86927]" />
-                <span className="text-[#363e38] dark:text-[#d3ded5]">{t('map.medRiskLegend')}</span>
+                <span className="w-2.5 h-2.5 rounded-none bg-[#a86927]" />
+                <span className="text-[#d3ded5]">{t('map.medRiskLegend')}</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#24613b]" />
-                <span className="text-[#363e38] dark:text-[#d3ded5]">{t('map.lowRiskLegend')}</span>
+                <span className="w-2.5 h-2.5 rounded-none bg-[#24613b]" />
+                <span className="text-[#d3ded5]">{t('map.lowRiskLegend')}</span>
               </div>
             </div>
-            <div className="mt-2.5 pt-1.5 border-t border-[#eeebe3] dark:border-[#202b23] text-[11px] text-[#6e7770] dark:text-[#8c9c90]">
+            <div className="mt-2.5 pt-1.5 border-t border-[#202b23] text-[11px] text-[#8c9c90]">
               Showing {filteredParcels.length} plots
             </div>
           </div>

@@ -6,13 +6,13 @@ export interface LanguageOption {
   code: LanguageCode;
   label: string;
   nativeLabel: string;
-  flag: string;
+  badge: string;
 }
 
 export const SUPPORTED_LANGUAGES: LanguageOption[] = [
-  { code: 'en', label: 'English', nativeLabel: 'English', flag: '🇬🇧' },
-  { code: 'mr', label: 'Marathi', nativeLabel: 'मराठी', flag: '🇮🇳' },
-  { code: 'hi', label: 'Hindi', nativeLabel: 'हिन्दी', flag: '🇮🇳' },
+  { code: 'en', label: 'English', nativeLabel: 'English', badge: 'EN' },
+  { code: 'mr', label: 'Marathi', nativeLabel: 'मराठी', badge: 'MR' },
+  { code: 'hi', label: 'Hindi', nativeLabel: 'हिन्दी', badge: 'HI' },
 ];
 
 export const translations = {
@@ -109,7 +109,7 @@ export const translations = {
     'alerts.inspect': 'Inspect Parcel Dossier',
 
     // Farmer Portal
-    'farmer.portalTitle': 'Bro Foresee — Landowner Portal',
+    'farmer.portalTitle': 'Bro Foresee: Landowner Portal',
     'farmer.publicCadastre': 'Public Cadastre',
     'farmer.officerLogin': 'Officer Login →',
     'farmer.tagline': 'Farmer & Landowner Acquisition Status Lookup (RFCTLARR Act 2013)',
@@ -155,7 +155,7 @@ export const translations = {
     // Auth & Login
     'auth.signInTitle': 'Sign in to access Land Acquisition Intelligence',
     'auth.requestAccessTitle': 'Request operational system access',
-    'auth.publicFarmerPortal': '🌾 Landowner & Farmer Portal',
+    'auth.publicFarmerPortal': 'Landowner & Farmer Portal',
     'auth.publicPortalDesc': 'Search survey records & compensation status',
     'auth.openPortal': 'Open Portal →',
     'auth.email': 'Email Address',
@@ -297,7 +297,7 @@ export const translations = {
     'alerts.inspect': 'पार्सल तपशील तपासा',
 
     // Farmer Portal
-    'farmer.portalTitle': 'ब्रो फोरसी — शेतकरी व जमीनमालक पोर्टल',
+    'farmer.portalTitle': 'ब्रो फोरसी: शेतकरी व जमीनमालक पोर्टल',
     'farmer.publicCadastre': 'सार्वजनिक भूमी अभिलेख',
     'farmer.officerLogin': 'अधिकारी लॉगिन →',
     'farmer.tagline': 'शेतकरी व जमीनमालक भूसंपादन स्थिती माहिती (भूसंपादन कायदा २०१३)',
@@ -343,7 +343,7 @@ export const translations = {
     // Auth & Login
     'auth.signInTitle': 'भूसंपादन माहिती प्रणालीत प्रवेश करा',
     'auth.requestAccessTitle': 'प्रणाली प्रवेशासाठी विनंती नोंदवा',
-    'auth.publicFarmerPortal': '🌾 शेतकरी व जमीनमालक पोर्टल',
+    'auth.publicFarmerPortal': 'शेतकरी व जमीनमालक पोर्टल',
     'auth.publicPortalDesc': 'सर्व्हे नोंदी आणि भरपाई स्थिती तपासा',
     'auth.openPortal': 'पोर्टल उघडा →',
     'auth.email': 'ईमेल पत्ता',
@@ -485,7 +485,7 @@ export const translations = {
     'alerts.inspect': 'पार्सल विवरण देखें',
 
     // Farmer Portal
-    'farmer.portalTitle': 'ब्रो फोरसी — किसान एवं भूस्वामी पोर्टल',
+    'farmer.portalTitle': 'ब्रो फोरसी: किसान एवं भूस्वामी पोर्टल',
     'farmer.publicCadastre': 'सार्वजनिक भूमि रिकॉर्ड',
     'farmer.officerLogin': 'अधिकारी लॉगिन →',
     'farmer.tagline': 'किसान एवं भूस्वामी अधिग्रहण स्थिति खोज (भूमि अधिग्रहण अधिनियम 2013)',
@@ -531,7 +531,7 @@ export const translations = {
     // Auth & Login
     'auth.signInTitle': 'भूमि अधिग्रहण सूचना प्रणाली में प्रवेश करें',
     'auth.requestAccessTitle': 'सिस्टम एक्सेस के लिए अनुरोध करें',
-    'auth.publicFarmerPortal': '🌾 किसान एवं भूस्वामी पोर्टल',
+    'auth.publicFarmerPortal': 'किसान एवं भूस्वामी पोर्टल',
     'auth.publicPortalDesc': 'सर्वे रिकॉर्ड और मुआवजा स्थिति देखें',
     'auth.openPortal': 'पोर्टल खोलें →',
     'auth.email': 'ईमेल पता',

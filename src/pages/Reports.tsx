@@ -86,12 +86,19 @@ export default function ReportsPage() {
   ];
 
   const handleDownload = (name: string) => {
-    alert(`Downloading ${name}`);
+    const csvContent = "data:text/csv;charset=utf-8,Report,Timestamp,Status\n" + `${name},${new Date().toISOString()},Generated\n`;
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `${name.toLowerCase().replace(/\\s+/g, "_")}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
     <AppLayout>
-      <div className="space-y-5 max-w-5xl mx-auto">
+      <div className="space-y-4 max-w-5xl mx-auto">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-[#e5e2da] dark:border-[#212c24]">
           <div>
@@ -105,68 +112,51 @@ export default function ReportsPage() {
 
           <button
             onClick={handleGenerateAiReport}
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#1f4230] hover:bg-[#163324] text-white text-xs font-semibold rounded-md transition-colors shadow-2xs self-start sm:self-auto"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#1f4230] hover:bg-[#163324] text-white text-xs font-semibold rounded-xs transition-colors self-start sm:self-auto cursor-pointer"
           >
             <span>Generate Executive Summary</span>
           </button>
         </div>
 
-        {/* Feature Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
-          <div className="p-4 rounded-lg bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26] shadow-2xs flex flex-col justify-between">
+        {/* 2-Column Summary Panel (Avoiding 3 feature cards in a row) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="p-3.5 rounded-xs bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26] flex flex-col justify-between">
             <div>
-              <div className="w-8 h-8 rounded-md bg-[#eef5f0] dark:bg-[#18261e] border border-[#cbe1d3] dark:border-[#274031] flex items-center justify-center text-[#1f4230] dark:text-[#82c499] mb-2.5">
+              <div className="w-8 h-8 rounded-xs bg-[#eef5f0] dark:bg-[#18261e] border border-[#cbe1d3] dark:border-[#274031] flex items-center justify-center text-[#1f4230] dark:text-[#82c499] mb-2.5">
                 <BarChart2 className="w-4 h-4" />
               </div>
               <h3 className="text-sm font-semibold text-[#181c19] dark:text-[#eff3ef] mb-1">
-                Progress Overview
+                Cadastral Progression Audit
               </h3>
               <p className="text-xs text-[#58615a] dark:text-[#95a398] leading-relaxed">
-                Breakdown of notifications, award determinations, and possession stages.
+                Breakdown of notifications, award determinations, and possession stages across all 15 administrative sectors.
               </p>
             </div>
             <div className="mt-3 pt-2 border-t border-[#eeebe3] dark:border-[#1d2920] text-xs font-semibold text-[#1f4230] dark:text-[#82c499]">
-              Updated daily
+              Updated daily with revenue records
             </div>
           </div>
 
-          <div className="p-4 rounded-lg bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26] shadow-2xs flex flex-col justify-between">
+          <div className="p-3.5 rounded-xs bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26] flex flex-col justify-between">
             <div>
-              <div className="w-8 h-8 rounded-md bg-[#fdf6ec] dark:bg-[#2c2217] border border-[#eddac2] dark:border-[#4d3a24] flex items-center justify-center text-[#a86927] dark:text-[#dfa364] mb-2.5">
+              <div className="w-8 h-8 rounded-xs bg-[#fdf6ec] dark:bg-[#2c2217] border border-[#eddac2] dark:border-[#4d3a24] flex items-center justify-center text-[#a86927] dark:text-[#dfa364] mb-2.5">
                 <PieChartIcon className="w-4 h-4" />
               </div>
               <h3 className="text-sm font-semibold text-[#181c19] dark:text-[#eff3ef] mb-1">
-                Risk Analysis
+                Litigation & Solatium Risk Digest
               </h3>
               <p className="text-xs text-[#58615a] dark:text-[#95a398] leading-relaxed">
-                Detailed view into dispute frequency, compensation delays, and risk factors.
+                Detailed view into dispute frequency, title heir contestations, and court objection impacts on corridor delivery.
               </p>
             </div>
             <div className="mt-3 pt-2 border-t border-[#eeebe3] dark:border-[#1d2920] text-xs font-semibold text-[#a86927] dark:text-[#dfa364]">
-              Bi-weekly audit
-            </div>
-          </div>
-
-          <div className="p-4 rounded-lg bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26] shadow-2xs flex flex-col justify-between">
-            <div>
-              <div className="w-8 h-8 rounded-md bg-[#f7f0e9] dark:bg-[#261d16] border border-[#dfcfc2] dark:border-[#423123] flex items-center justify-center text-[#5a412f] dark:text-[#c49870] mb-2.5">
-                <FileText className="w-4 h-4" />
-              </div>
-              <h3 className="text-sm font-semibold text-[#181c19] dark:text-[#eff3ef] mb-1">
-                Stakeholder PDF
-              </h3>
-              <p className="text-xs text-[#58615a] dark:text-[#95a398] leading-relaxed">
-                Single-page printable executive summary formatted for government stakeholders.
-              </p>
-            </div>
-            <div className="mt-3 pt-2 border-t border-[#eeebe3] dark:border-[#1d2920] text-xs font-semibold text-[#5a412f] dark:text-[#c49870]">
-              Print-ready
+              Bi-weekly statutory review
             </div>
           </div>
         </div>
 
         {/* Reports Table */}
-        <div className="rounded-lg border border-[#e5e2da] dark:border-[#222f26] bg-white dark:bg-[#141d17] shadow-2xs overflow-hidden">
+        <div className="rounded-xs border border-[#e5e2da] dark:border-[#222f26] bg-white dark:bg-[#141d17] overflow-hidden">
           <div className="p-3.5 border-b border-[#e5e2da] dark:border-[#212c24] flex items-center justify-between">
             <h2 className="text-sm font-semibold text-[#181c19] dark:text-[#eff3ef]">
               Generated Reports
@@ -199,14 +189,14 @@ export default function ReportsPage() {
                       {report.date}
                     </td>
                     <td className="px-4 py-3">
-                      <span className="font-mono text-xs px-2 py-0.5 rounded bg-[#f4f3ef] dark:bg-[#1c2720] text-[#58615a] dark:text-[#b4c0b6] border border-[#dedad1] dark:border-[#29382d]">
+                      <span className="font-mono text-xs px-2 py-0.5 rounded-xs bg-[#f4f3ef] dark:bg-[#1c2720] text-[#58615a] dark:text-[#b4c0b6] border border-[#dedad1] dark:border-[#29382d]">
                         {report.type} · {report.size}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right">
                       <button
                         onClick={() => handleDownload(report.name)}
-                        className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#1f4230] hover:bg-[#163324] text-white rounded text-xs font-medium transition-colors shadow-2xs"
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#1f4230] hover:bg-[#163324] text-white rounded-xs text-xs font-medium transition-colors cursor-pointer"
                       >
                         <Download className="w-3.5 h-3.5" />
                         <span>Download</span>
@@ -220,42 +210,41 @@ export default function ReportsPage() {
         </div>
       </div>
 
-      {/* Modal */}
+      {/* Modal (No liquid glass backdrop-blur, no soft radius, no drop shadow) */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-2xs p-4">
-          <div className="bg-white dark:bg-[#151e18] border border-[#e5e2da] dark:border-[#28372d] rounded-lg w-full max-w-2xl max-h-[80vh] flex flex-col shadow-xl">
-            <div className="p-3.5 border-b border-[#e5e2da] dark:border-[#212c24] flex items-center justify-between bg-[#f8f8f5] dark:bg-[#111813]">
-              <h2 className="text-sm font-semibold text-[#181c19] dark:text-[#eff3ef]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="bg-[#151e18] border border-[#28372d] rounded-xs w-full max-w-2xl max-h-[80vh] flex flex-col">
+            <div className="p-3.5 border-b border-[#212c24] flex items-center justify-between bg-[#111813]">
+              <h2 className="text-sm font-semibold text-[#eff3ef]">
                 Executive Project Summary
               </h2>
               <button
                 onClick={() => setShowModal(false)}
-                className="p-1 hover:bg-[#eeebe3] dark:hover:bg-[#1f2c22] rounded text-[#828c84]"
+                className="p-1 hover:bg-[#1f2c22] rounded-xs text-[#828c84] hover:text-white"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="p-5 overflow-y-auto flex-1 text-xs text-[#363e38] dark:text-[#d3ded5] leading-relaxed">
+            <div className="p-5 overflow-y-auto flex-1 text-xs text-[#d3ded5] leading-relaxed">
               {generatingAiReport ? (
                 <div className="flex flex-col items-center justify-center py-12">
-                  <div className="w-7 h-7 border-2 border-[#1f4230] border-t-transparent rounded-full animate-spin mb-3" />
-                  <p className="text-xs text-[#58615a] dark:text-[#95a398]">
-                    Synthesizing report...
+                  <p className="text-xs text-[#95a398]">
+                    Synthesizing cadastral risk analytics...
                   </p>
                 </div>
               ) : (
-                <div className="prose prose-stone dark:prose-invert max-w-none text-xs">
+                <div className="prose prose-invert max-w-none text-xs">
                   <Markdown>{aiReportContent}</Markdown>
                 </div>
               )}
             </div>
 
             {!generatingAiReport && aiReportContent && (
-              <div className="p-3 border-t border-[#e5e2da] dark:border-[#212c24] bg-[#f8f8f5] dark:bg-[#111813] flex justify-end">
+              <div className="p-3 border-t border-[#212c24] bg-[#111813] flex justify-end">
                 <button
                   onClick={() => setShowModal(false)}
-                  className="px-3.5 py-1.5 bg-[#1f4230] hover:bg-[#163324] text-white text-xs font-semibold rounded transition-colors"
+                  className="px-3.5 py-1.5 bg-[#1f4230] hover:bg-[#163324] text-white text-xs font-semibold rounded-xs transition-colors cursor-pointer"
                 >
                   Close
                 </button>

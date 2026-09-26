@@ -5,14 +5,10 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useTranslation } from "../lib/i18n";
 import {
   Search,
-  ChevronLeft,
-  ChevronRight,
   Eye,
   Plus,
   X,
-  SlidersHorizontal,
 } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
 
 export default function ParcelsPage() {
   const [parcels, setParcels] = useState<Parcel[]>(staticParcels);
@@ -148,7 +144,7 @@ export default function ParcelsPage() {
 
           <button
             onClick={() => setIsAddModalOpen(true)}
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#1f4230] hover:bg-[#163324] text-white text-xs font-semibold rounded-md transition-colors shadow-2xs self-start sm:self-auto cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#1f4230] hover:bg-[#163324] text-white text-xs font-semibold rounded-xs transition-colors self-start sm:self-auto cursor-pointer"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>{t('parcels.registerBtn')}</span>
@@ -156,7 +152,7 @@ export default function ParcelsPage() {
         </div>
 
         {/* Data Table Container */}
-        <div className="rounded-lg border border-[#e5e2da] dark:border-[#222f26] bg-white dark:bg-[#141d17] shadow-2xs flex flex-col flex-1 overflow-hidden">
+        <div className="rounded-xs border border-[#e5e2da] dark:border-[#222f26] bg-white dark:bg-[#141d17] flex flex-col flex-1 overflow-hidden">
           {/* Filter Bar */}
           <div className="p-3 border-b border-[#e5e2da] dark:border-[#212c24] bg-[#faf9f6] dark:bg-[#121914] flex flex-col sm:flex-row gap-3 justify-between items-center">
             {/* Search */}
@@ -167,13 +163,13 @@ export default function ParcelsPage() {
                 placeholder={t('parcels.searchPlaceholder')}
                 value={searchTerm}
                 onChange={(e) => handleSearchChange(e.target.value)}
-                className="w-full pl-8 pr-7 py-1.5 text-xs bg-white dark:bg-[#18231c] border border-[#dcd7cd] dark:border-[#2b3a30] rounded-md text-[#181c19] dark:text-[#eff3ef] placeholder-[#828c84] focus:outline-none focus:ring-1 focus:ring-[#1f4230] focus:border-[#1f4230]"
+                className="w-full pl-8 pr-7 py-1.5 text-xs bg-white dark:bg-[#18231c] border border-[#dcd7cd] dark:border-[#2b3a30] rounded-xs text-[#181c19] dark:text-[#eff3ef] placeholder-[#828c84] focus:outline-none focus:border-[#1f4230]"
               />
               {searchTerm && (
                 <button
                   onClick={handleClearSearch}
                   title="Clear search"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-[#828c84] hover:text-white p-0.5 rounded cursor-pointer"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-[#828c84] hover:text-white p-0.5 rounded-xs cursor-pointer"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
@@ -186,7 +182,7 @@ export default function ParcelsPage() {
                 {t('parcels.showingCount', { count: filteredParcels.length, total: parcels.length })}
               </span>
 
-              <div className="flex items-center p-0.5 bg-[#eeeae0] dark:bg-[#1a251e] rounded-md border border-[#dedad1] dark:border-[#25342a]">
+              <div className="flex items-center p-0.5 bg-[#eeeae0] dark:bg-[#1a251e] rounded-xs border border-[#dedad1] dark:border-[#25342a]">
                 {(["All", "High", "Medium", "Low"] as const).map((lvl) => (
                   <button
                     key={lvl}
@@ -194,9 +190,9 @@ export default function ParcelsPage() {
                       setRiskFilter(lvl);
                       setCurrentPage(1);
                     }}
-                    className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
+                    className={`px-3 py-1 text-xs font-medium rounded-xs transition-colors cursor-pointer ${
                       riskFilter === lvl
-                        ? "bg-[#1f4230] text-white shadow-2xs font-semibold"
+                        ? "bg-[#1f4230] text-white font-semibold"
                         : "text-[#58615a] dark:text-[#95a398] hover:text-[#181c19] dark:hover:text-white"
                     }`}
                   >
@@ -260,7 +256,7 @@ export default function ParcelsPage() {
                       </td>
                       <td className="px-4 py-2.5">
                         <span
-                          className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium border ${getRiskColor(
+                          className={`inline-flex items-center px-2 py-0.5 rounded-xs text-[11px] font-medium border ${getRiskColor(
                             parcel.riskLevel
                           )}`}
                         >
@@ -272,7 +268,7 @@ export default function ParcelsPage() {
                       <td className="px-4 py-2.5 text-right">
                         <Link
                           to={`/parcels/${parcel.id}`}
-                          className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-[#1f4230] dark:text-[#82c499] hover:bg-[#eeebe3] dark:hover:bg-[#1f2c22] rounded transition-colors"
+                          className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-[#1f4230] dark:text-[#82c499] hover:bg-[#eeebe3] dark:hover:bg-[#1f2c22] rounded-xs transition-colors"
                         >
                           <Eye className="w-3.5 h-3.5" />
                           <span>{t('parcels.viewDossier')}</span>
@@ -284,9 +280,9 @@ export default function ParcelsPage() {
                   <tr>
                     <td
                       colSpan={8}
-                      className="px-6 py-12 text-center text-[#7a857c] bg-[#faf9f6] dark:bg-[#121914]"
+                      className="px-4 py-8 text-center text-xs text-[#6e7770] dark:text-[#8c9c90]"
                     >
-                      No parcels matched the filter criteria.
+                      No land parcels found matching your criteria.
                     </td>
                   </tr>
                 )}
@@ -295,176 +291,131 @@ export default function ParcelsPage() {
           </div>
 
           {/* Pagination */}
-          <div className="p-3 border-t border-[#e5e2da] dark:border-[#212c24] bg-[#faf9f6] dark:bg-[#121914] flex items-center justify-between text-xs text-[#58615a] dark:text-[#95a398]">
-            <div>
-              Showing{" "}
-              <strong className="text-[#181c19] dark:text-[#eff3ef] font-mono">
-                {(currentPage - 1) * itemsPerPage + 1}
-              </strong>{" "}
-              to{" "}
-              <strong className="text-[#181c19] dark:text-[#eff3ef] font-mono">
-                {Math.min(currentPage * itemsPerPage, filteredParcels.length)}
-              </strong>{" "}
-              of{" "}
-              <strong className="text-[#181c19] dark:text-[#eff3ef] font-mono">
-                {filteredParcels.length}
-              </strong>{" "}
-              records
-            </div>
-
-            <div className="flex items-center gap-1.5">
-              <button
-                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                disabled={currentPage === 1}
-                aria-label="Previous Page"
-                className="p-1.5 rounded border border-[#dcd7cd] dark:border-[#2b3a30] text-[#58615a] dark:text-[#95a398] hover:bg-[#eeebe3] dark:hover:bg-[#1d2720] disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                <ChevronLeft className="w-3.5 h-3.5" />
-              </button>
-              <span className="px-2 tabular-nums">
-                Page {currentPage} of {totalPages || 1}
+          {totalPages > 1 && (
+            <div className="p-3 border-t border-[#e5e2da] dark:border-[#212c24] flex items-center justify-between bg-[#faf9f6] dark:bg-[#121914] text-xs">
+              <span className="text-[#6e7770] dark:text-[#8c9c90]">
+                Page {currentPage} of {totalPages}
               </span>
-              <button
-                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                disabled={currentPage === totalPages || totalPages === 0}
-                aria-label="Next Page"
-                className="p-1.5 rounded border border-[#dcd7cd] dark:border-[#2b3a30] text-[#58615a] dark:text-[#95a398] hover:bg-[#eeebe3] dark:hover:bg-[#1d2720] disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                <ChevronRight className="w-3.5 h-3.5" />
-              </button>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                  className="px-2.5 py-1 rounded-xs border border-[#dcd7cd] dark:border-[#2b3a30] text-[#181c19] dark:text-[#eff3ef] disabled:opacity-40 hover:bg-[#f6f5f0] dark:hover:bg-[#1c2720] transition-colors cursor-pointer"
+                >
+                  Previous
+                </button>
+                <button
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages}
+                  className="px-2.5 py-1 rounded-xs border border-[#dcd7cd] dark:border-[#2b3a30] text-[#181c19] dark:text-[#eff3ef] disabled:opacity-40 hover:bg-[#f6f5f0] dark:hover:bg-[#1c2720] transition-colors cursor-pointer"
+                >
+                  Next
+                </button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
-      </div>
 
-      {/* Add Parcel Modal */}
-      <AnimatePresence>
+        {/* Add Modal */}
         {isAddModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-2xs p-4">
-            <motion.div
-              initial={{ scale: 0.97, opacity: 0, y: 10 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.97, opacity: 0, y: 10 }}
-              className="bg-white dark:bg-[#151e18] border border-[#e5e2da] dark:border-[#28372d] rounded-lg p-5 w-full max-w-md shadow-xl"
-            >
-              <div className="flex justify-between items-center mb-4 pb-2 border-b border-[#e5e2da] dark:border-[#212c24]">
-                <div>
-                  <h2 className="text-base font-bold text-[#181c19] dark:text-[#eff3ef]">
-                    Register Land Parcel
-                  </h2>
-                  <p className="text-xs text-[#58615a] dark:text-[#95a398]">
-                    Enter parcel and survey details.
-                  </p>
-                </div>
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+            <div className="bg-[#141d17] border border-[#26372c] rounded-xs max-w-md w-full p-5 text-xs text-white">
+              <div className="flex items-center justify-between pb-3 border-b border-[#212e25] mb-4">
+                <h3 className="text-sm font-bold text-white">Register Land Parcel</h3>
                 <button
                   onClick={() => setIsAddModalOpen(false)}
-                  className="text-[#828c84] hover:text-[#181c19] dark:hover:text-white p-1 rounded"
+                  className="text-[#8c9c90] hover:text-white"
                 >
                   <X className="w-4 h-4" />
                 </button>
               </div>
 
-              <form onSubmit={handleAddParcel} className="space-y-3.5">
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-medium text-[#58615a] dark:text-[#95a398] mb-1">
-                      Assigned ID
-                    </label>
-                    <input
-                      type="text"
-                      value={newParcel.id}
-                      disabled
-                      className="w-full bg-[#f4f3ef] dark:bg-[#101712] border border-[#dcd7cd] dark:border-[#28372d] rounded px-3 py-1.5 text-xs font-mono text-[#828c84] cursor-not-allowed"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-[#58615a] dark:text-[#95a398] mb-1">
-                      Survey Number *
-                    </label>
-                    <input
-                      required
-                      type="text"
-                      placeholder="e.g. SY-48/3"
-                      value={newParcel.surveyNumber}
-                      onChange={(e) =>
-                        setNewParcel({ ...newParcel, surveyNumber: e.target.value })
-                      }
-                      className="w-full bg-white dark:bg-[#18231c] border border-[#dcd7cd] dark:border-[#28372d] rounded px-3 py-1.5 text-xs text-[#181c19] dark:text-[#eff3ef] focus:ring-1 focus:ring-[#1f4230] focus:border-[#1f4230] outline-none"
-                    />
-                  </div>
+              <form onSubmit={handleAddParcel} className="space-y-3">
+                <div>
+                  <label className="block text-[11px] text-[#8c9c90] mb-1">
+                    Survey / Gat Number *
+                  </label>
+                  <input
+                    type="text"
+                    value={newParcel.surveyNumber}
+                    onChange={(e) =>
+                      setNewParcel({ ...newParcel, surveyNumber: e.target.value })
+                    }
+                    placeholder="e.g. 142/3B"
+                    required
+                    className="w-full bg-[#0d1410] border border-[#2b3b30] rounded-xs px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#79c294]"
+                  />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-[#58615a] dark:text-[#95a398] mb-1">
-                    Landowner Full Name *
+                  <label className="block text-[11px] text-[#8c9c90] mb-1">
+                    Village *
                   </label>
                   <input
-                    required
                     type="text"
-                    placeholder="Full name of registered owner"
+                    value={newParcel.village}
+                    onChange={(e) =>
+                      setNewParcel({ ...newParcel, village: e.target.value })
+                    }
+                    placeholder="e.g. Wakad"
+                    required
+                    className="w-full bg-[#0d1410] border border-[#2b3b30] rounded-xs px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#79c294]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] text-[#8c9c90] mb-1">
+                    Registered Landowner Name *
+                  </label>
+                  <input
+                    type="text"
                     value={newParcel.landOwner}
                     onChange={(e) =>
                       setNewParcel({ ...newParcel, landOwner: e.target.value })
                     }
-                    className="w-full bg-white dark:bg-[#18231c] border border-[#dcd7cd] dark:border-[#28372d] rounded px-3 py-1.5 text-xs text-[#181c19] dark:text-[#eff3ef] focus:ring-1 focus:ring-[#1f4230] focus:border-[#1f4230] outline-none"
+                    placeholder="e.g. Sopan Patil"
+                    required
+                    className="w-full bg-[#0d1410] border border-[#2b3b30] rounded-xs px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#79c294]"
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-medium text-[#58615a] dark:text-[#95a398] mb-1">
-                      Village *
-                    </label>
-                    <input
-                      required
-                      type="text"
-                      placeholder="e.g. Hinjewadi"
-                      value={newParcel.village}
-                      onChange={(e) =>
-                        setNewParcel({ ...newParcel, village: e.target.value })
-                      }
-                      className="w-full bg-white dark:bg-[#18231c] border border-[#dcd7cd] dark:border-[#28372d] rounded px-3 py-1.5 text-xs text-[#181c19] dark:text-[#eff3ef] focus:ring-1 focus:ring-[#1f4230] focus:border-[#1f4230] outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-[#58615a] dark:text-[#95a398] mb-1">
-                      Area (Acres) *
-                    </label>
-                    <input
-                      required
-                      type="number"
-                      step="0.01"
-                      min="0"
-                      placeholder="e.g. 5.2"
-                      value={newParcel.areaAcres}
-                      onChange={(e) =>
-                        setNewParcel({ ...newParcel, areaAcres: e.target.value })
-                      }
-                      className="w-full bg-white dark:bg-[#18231c] border border-[#dcd7cd] dark:border-[#28372d] rounded px-3 py-1.5 text-xs text-[#181c19] dark:text-[#eff3ef] focus:ring-1 focus:ring-[#1f4230] focus:border-[#1f4230] outline-none"
-                    />
-                  </div>
+                <div>
+                  <label className="block text-[11px] text-[#8c9c90] mb-1">
+                    Acquisition Area (Acres) *
+                  </label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={newParcel.areaAcres}
+                    onChange={(e) =>
+                      setNewParcel({ ...newParcel, areaAcres: e.target.value })
+                    }
+                    placeholder="e.g. 2.75"
+                    required
+                    className="w-full bg-[#0d1410] border border-[#2b3b30] rounded-xs px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#79c294]"
+                  />
                 </div>
 
-                <div className="pt-3 border-t border-[#e5e2da] dark:border-[#212c24] flex justify-end gap-2">
+                <div className="flex justify-end gap-2 pt-3 border-t border-[#212e25]">
                   <button
                     type="button"
                     onClick={() => setIsAddModalOpen(false)}
-                    className="px-3.5 py-1.5 text-xs text-[#58615a] dark:text-[#95a398] hover:text-[#181c19] dark:hover:text-white"
+                    className="px-3 py-1.5 border border-[#2b3b30] text-[#8c9c90] hover:text-white rounded-xs"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-1.5 bg-[#1f4230] hover:bg-[#163324] text-white text-xs font-semibold rounded transition-colors shadow-2xs"
+                    className="px-3.5 py-1.5 bg-[#1f4230] hover:bg-[#28573f] text-white font-semibold rounded-xs"
                   >
                     Save Parcel
                   </button>
                 </div>
               </form>
-            </motion.div>
+            </div>
           </div>
         )}
-      </AnimatePresence>
+      </div>
     </AppLayout>
   );
 }

@@ -8,18 +8,10 @@ import LanguageSelector from "../components/LanguageSelector";
 import {
   Search,
   CheckCircle2,
-  AlertCircle,
-  FileText,
   Clock,
-  ChevronRight,
-  Shield,
-  HelpCircle,
-  ArrowLeft,
   Send,
-  Building2,
   Calendar,
   Layers,
-  MapPin,
 } from "lucide-react";
 
 export default function FarmerPortal() {
@@ -34,7 +26,6 @@ export default function FarmerPortal() {
   const [description, setDescription] = useState("");
   const [grievanceSubmitting, setGrievanceSubmitting] = useState(false);
   const [grievanceSubmitted, setGrievanceSubmitted] = useState<string | null>(null);
-  const [errorMsg, setErrorMsg] = useState("");
 
   const matchingParcels = useMemo(() => {
     if (!searchQuery.trim()) return [];
@@ -80,7 +71,6 @@ export default function FarmerPortal() {
   const handleGrievanceSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedParcel) return;
-    setErrorMsg("");
     setGrievanceSubmitting(true);
 
     const refNumber = `GRV-2026-${Math.floor(1000 + Math.random() * 9000)}`;
@@ -103,7 +93,6 @@ export default function FarmerPortal() {
       setFarmerPhone("");
     } catch (err: any) {
       console.warn("Firestore grievance write note:", err);
-      // Fallback local acknowledgment so farmer always gets their tracking reference
       setGrievanceSubmitted(refNumber);
     } finally {
       setGrievanceSubmitting(false);
@@ -113,19 +102,19 @@ export default function FarmerPortal() {
   return (
     <div className="min-h-screen bg-[#0d1410] text-[#eff3ef] font-sans selection:bg-[#2e543e]">
       {/* Top Banner */}
-      <header className="border-b border-[#1f2f25] bg-[#121c16] sticky top-0 z-30 shadow-sm">
+      <header className="border-b border-[#1f2f25] bg-[#121c16] sticky top-0 z-30">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link
               to="/"
-              className="w-8 h-8 rounded-lg bg-[#1f4230] border border-[#2b5941] flex items-center justify-center text-[#d9a86c] shadow-xs"
+              className="w-8 h-8 rounded-xs bg-[#1f4230] border border-[#2b5941] flex items-center justify-center text-[#d9a86c]"
             >
               <Layers className="w-4 h-4 text-white" />
             </Link>
             <div>
               <div className="font-semibold text-sm text-white flex items-center gap-2">
                 <span>{t('farmer.portalTitle')}</span>
-                <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-[#244231] text-[#86d4a5] border border-[#325d45]">
+                <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded-xs bg-[#244231] text-[#86d4a5] border border-[#325d45]">
                   {t('farmer.publicCadastre')}
                 </span>
               </div>
@@ -137,6 +126,12 @@ export default function FarmerPortal() {
 
           <div className="flex items-center gap-3">
             <LanguageSelector />
+            <Link
+              to="/legal"
+              className="text-xs text-[#9eb5a7] hover:text-white transition-colors underline"
+            >
+              Terms & Privacy
+            </Link>
             <Link
               to="/login"
               className="text-xs text-[#9eb5a7] hover:text-white transition-colors"
@@ -150,10 +145,10 @@ export default function FarmerPortal() {
       {/* Main Container */}
       <main className="max-w-6xl mx-auto px-4 py-6 space-y-6">
         {/* Search Hero Section */}
-        <div className="rounded-xl border border-[#23382b] bg-[#142019] p-5 sm:p-7 shadow-lg">
+        <div className="rounded-xs border border-[#23382b] bg-[#142019] p-5 sm:p-7">
           <div className="max-w-3xl">
             <span className="text-xs font-semibold uppercase tracking-wider text-[#79c294] block mb-1">
-              {t('farmer.searchHeading')}
+              Cadastral Verification
             </span>
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white mb-2">
               {t('farmer.searchHeading')}
@@ -170,7 +165,7 @@ export default function FarmerPortal() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={t('farmer.searchPlaceholder')}
-                className="w-full pl-10 pr-4 py-2.5 text-xs bg-[#0b130e] border border-[#2b4435] rounded-lg text-white placeholder-[#687d71] focus:outline-none focus:ring-1 focus:ring-[#79c294] focus:border-[#79c294]"
+                className="w-full pl-10 pr-4 py-2 text-xs bg-[#0b130e] border border-[#2b4435] rounded-xs text-white placeholder-[#687d71] focus:outline-none focus:border-[#79c294]"
               />
             </div>
 
@@ -188,7 +183,7 @@ export default function FarmerPortal() {
                         const match = staticParcels.find((p) => p.surveyNumber === sNo);
                         if (match) setSelectedParcel(match);
                       }}
-                      className="px-2 py-0.5 rounded text-[11px] bg-[#1a2d22] border border-[#284635] text-[#b4d6c2] hover:bg-[#254231] hover:text-white transition-colors"
+                      className="px-2 py-0.5 rounded-xs text-[11px] bg-[#1a2d22] border border-[#284635] text-[#b4d6c2] hover:bg-[#254231] hover:text-white transition-colors cursor-pointer"
                     >
                       {sample}
                     </button>
@@ -199,7 +194,7 @@ export default function FarmerPortal() {
 
             {/* Live Autocomplete Results */}
             {matchingParcels.length > 0 && (
-              <div className="mt-3 bg-[#0d1611] border border-[#273f31] rounded-lg overflow-hidden divide-y divide-[#1b2b22]">
+              <div className="mt-3 bg-[#0d1611] border border-[#273f31] rounded-xs overflow-hidden divide-y divide-[#1b2b22]">
                 <div className="p-2 text-[11px] font-semibold text-[#869e90] bg-[#101b14]">
                   {t('farmer.matchingRecords')} ({matchingParcels.length}):
                 </div>
@@ -210,7 +205,7 @@ export default function FarmerPortal() {
                       setSelectedParcel(p);
                       setSearchQuery("");
                     }}
-                    className="w-full p-2.5 text-left text-xs hover:bg-[#18271e] transition-colors flex items-center justify-between"
+                    className="w-full p-2.5 text-left text-xs hover:bg-[#18271e] transition-colors flex items-center justify-between cursor-pointer"
                   >
                     <div>
                       <span className="font-semibold text-white">Survey No. {p.surveyNumber}</span>
@@ -231,16 +226,16 @@ export default function FarmerPortal() {
 
         {/* Selected Parcel Dossier */}
         {selectedParcel ? (
-          <div className="space-y-6">
+          <div className="space-y-5">
             {/* Top Details Card */}
-            <div className="rounded-xl border border-[#213529] bg-[#131d17] p-5 shadow-sm">
+            <div className="rounded-xs border border-[#213529] bg-[#131d17] p-4 sm:p-5">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[#1c2e23] gap-3">
                 <div>
                   <div className="flex items-center gap-2">
                     <h2 className="text-lg font-bold text-white">
                       Survey No. {selectedParcel.surveyNumber}
                     </h2>
-                    <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-[#1c2e23] border border-[#2a4535] text-[#a4c7b2]">
+                    <span className="px-2 py-0.5 rounded-xs text-[11px] font-mono bg-[#1c2e23] border border-[#2a4535] text-[#a4c7b2]">
                       {selectedParcel.id}
                     </span>
                   </div>
@@ -251,32 +246,32 @@ export default function FarmerPortal() {
 
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-[#8ca193]">Current Stage:</span>
-                  <span className="px-2.5 py-1 rounded text-xs font-semibold bg-[#264433] text-[#93dfb1] border border-[#355f47]">
+                  <span className="px-2.5 py-1 rounded-xs text-xs font-semibold bg-[#264433] text-[#93dfb1] border border-[#355f47]">
                     {selectedParcel.currentAcquisitionStage}
                   </span>
                 </div>
               </div>
 
               {/* Key Indicators Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4 text-xs">
-                <div className="p-3 rounded-lg bg-[#0d1611] border border-[#1b2b21]">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 text-xs">
+                <div className="p-3 rounded-xs bg-[#0d1611] border border-[#1b2b21]">
                   <span className="text-[11px] text-[#7d9385] block mb-1">{t('farmer.registeredOwner')}</span>
                   <span className="font-semibold text-white text-sm">{selectedParcel.landOwner}</span>
                 </div>
 
-                <div className="p-3 rounded-lg bg-[#0d1611] border border-[#1b2b21]">
+                <div className="p-3 rounded-xs bg-[#0d1611] border border-[#1b2b21]">
                   <span className="text-[11px] text-[#7d9385] block mb-1">{t('farmer.acqArea')}</span>
                   <span className="font-semibold text-white text-sm">{selectedParcel.areaAcres} {t('common.acres')}</span>
                 </div>
 
-                <div className="p-3 rounded-lg bg-[#0d1611] border border-[#1b2b21]">
+                <div className="p-3 rounded-xs bg-[#0d1611] border border-[#1b2b21]">
                   <span className="text-[11px] text-[#7d9385] block mb-1">{t('farmer.estimatedAward')}</span>
                   <span className="font-semibold text-[#8ed4a7] text-sm tabular-nums">
                     ₹{(estimatedCompensation / 100000).toFixed(1)} Lakhs
                   </span>
                 </div>
 
-                <div className="p-3 rounded-lg bg-[#0d1611] border border-[#1b2b21]">
+                <div className="p-3 rounded-xs bg-[#0d1611] border border-[#1b2b21]">
                   <span className="text-[11px] text-[#7d9385] block mb-1">{t('farmer.objectionStatus')}</span>
                   <span className="font-semibold text-white text-sm">
                     {selectedParcel.objectionStatus || "Nominal"}
@@ -286,7 +281,7 @@ export default function FarmerPortal() {
             </div>
 
             {/* Stepper Timeline: RFCTLARR Act 2013 Stages */}
-            <div className="rounded-xl border border-[#213529] bg-[#131d17] p-5 shadow-sm">
+            <div className="rounded-xs border border-[#213529] bg-[#131d17] p-4 sm:p-5">
               <h3 className="text-sm font-bold text-white mb-1">
                 {t('farmer.stageTracker')}
               </h3>
@@ -301,9 +296,9 @@ export default function FarmerPortal() {
                   return (
                     <div
                       key={st.step}
-                      className={`p-3 rounded-lg border transition-colors ${
+                      className={`p-3 rounded-xs border transition-colors ${
                         isCurrent
-                          ? "bg-[#1c3827] border-[#39724f] ring-1 ring-[#488e63]"
+                          ? "bg-[#1c3827] border-[#39724f]"
                           : isPast
                           ? "bg-[#132219] border-[#254231] opacity-90"
                           : "bg-[#0d1410] border-[#18261e] opacity-40"
@@ -316,9 +311,9 @@ export default function FarmerPortal() {
                         {isPast ? (
                           <CheckCircle2 className="w-3.5 h-3.5 text-[#79c294]" />
                         ) : isCurrent ? (
-                          <Clock className="w-3.5 h-3.5 text-[#e5aa65] animate-pulse" />
+                          <Clock className="w-3.5 h-3.5 text-[#e5aa65]" />
                         ) : (
-                          <span className="w-2 h-2 rounded-full bg-[#324539]" />
+                          <span className="w-2 h-2 rounded-none bg-[#324539]" />
                         )}
                       </div>
                       <div className="font-semibold text-xs text-white leading-snug">
@@ -334,18 +329,18 @@ export default function FarmerPortal() {
             </div>
 
             {/* Compensation Calculator Breakdown */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="rounded-xl border border-[#213529] bg-[#131d17] p-5 shadow-sm space-y-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="rounded-xs border border-[#213529] bg-[#131d17] p-4 sm:p-5 space-y-3">
                 <div className="flex items-center justify-between pb-2 border-b border-[#1c2e23]">
-                  <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                    <span>{t('farmer.compHeading')}</span>
+                  <h3 className="text-sm font-bold text-white">
+                    {t('farmer.compHeading')}
                   </h3>
                   <span className="text-[11px] text-[#7fa38c]">RFCTLARR Sec. 26-30</span>
                 </div>
 
                 <div className="space-y-2 text-xs divide-y divide-[#18261e]">
                   <div className="flex justify-between pt-1">
-                    <span className="text-[#8ca193]">{t('farmer.area')}</span>
+                    <span className="text-[#8ca193]">{t('farmer.acqArea')}</span>
                     <span className="font-semibold text-white font-mono">{selectedParcel.areaAcres} {t('common.acres')}</span>
                   </div>
                   <div className="flex justify-between pt-1">
@@ -354,11 +349,11 @@ export default function FarmerPortal() {
                   </div>
                   <div className="flex justify-between pt-1">
                     <span className="text-[#8ca193]">{t('farmer.ruralFactor')}</span>
-                    <span className="font-semibold text-white font-mono">1.50×</span>
+                    <span className="font-semibold text-white font-mono">1.50x</span>
                   </div>
                   <div className="flex justify-between pt-1">
                     <span className="text-[#8ca193]">{t('farmer.solatiumBonus')}</span>
-                    <span className="font-semibold text-white font-mono">+100% Statutory Bonus</span>
+                    <span className="font-semibold text-white font-mono">+100% Statutory Solatium</span>
                   </div>
                   <div className="flex justify-between pt-2 border-t border-[#264433] text-sm">
                     <span className="font-bold text-white">{t('farmer.totalCompensation')}</span>
@@ -368,13 +363,13 @@ export default function FarmerPortal() {
                   </div>
                 </div>
 
-                <div className="p-2.5 rounded-lg bg-[#0e1611] border border-[#1e3025] text-[11px] text-[#91a89a] leading-relaxed">
-                  💡 {t('farmer.dbtNotice')}
+                <div className="p-2.5 rounded-xs bg-[#0e1611] border border-[#1e3025] text-[11px] text-[#91a89a] leading-relaxed">
+                  Notice: {t('farmer.dbtNotice')}
                 </div>
               </div>
 
               {/* Hearing Schedule & Notice Board */}
-              <div className="rounded-xl border border-[#213529] bg-[#131d17] p-5 shadow-sm space-y-3">
+              <div className="rounded-xs border border-[#213529] bg-[#131d17] p-4 sm:p-5 space-y-3">
                 <div className="flex items-center justify-between pb-2 border-b border-[#1c2e23]">
                   <h3 className="text-sm font-bold text-white flex items-center gap-2">
                     <Calendar className="w-4 h-4 text-[#8ed4a7]" />
@@ -384,7 +379,7 @@ export default function FarmerPortal() {
                 </div>
 
                 <div className="space-y-3 text-xs">
-                  <div className="p-3 rounded-lg bg-[#18271e] border border-[#284534]">
+                  <div className="p-3 rounded-xs bg-[#18271e] border border-[#284534]">
                     <div className="font-semibold text-white flex items-center justify-between">
                       <span>{t('farmer.hearingNotice')}</span>
                       <span className="text-[11px] text-[#e5aa65] font-semibold">Scheduled: 15 Oct 2026</span>
@@ -394,7 +389,7 @@ export default function FarmerPortal() {
                     </div>
                   </div>
 
-                  <div className="p-3 rounded-lg bg-[#0e1611] border border-[#1e3025]">
+                  <div className="p-3 rounded-xs bg-[#0e1611] border border-[#1e3025]">
                     <div className="font-semibold text-white">{t('farmer.reqDocs')}</div>
                     <ul className="list-disc list-inside text-[11px] text-[#8ca193] mt-1 space-y-0.5">
                       <li>{t('farmer.doc1')}</li>
@@ -408,7 +403,7 @@ export default function FarmerPortal() {
             </div>
 
             {/* Grievance & Objection Filing Form */}
-            <div className="rounded-xl border border-[#213529] bg-[#131d17] p-5 shadow-sm">
+            <div className="rounded-xs border border-[#213529] bg-[#131d17] p-4 sm:p-5">
               <div className="pb-3 border-b border-[#1c2e23] mb-4">
                 <h3 className="text-sm font-bold text-white flex items-center gap-2">
                   <span>{t('farmer.fileGrievance')}</span>
@@ -419,14 +414,14 @@ export default function FarmerPortal() {
               </div>
 
               {grievanceSubmitted ? (
-                <div className="p-4 rounded-lg bg-[#14291c] border border-[#295437] text-center space-y-2">
+                <div className="p-4 rounded-xs bg-[#14291c] border border-[#295437] text-center space-y-2">
                   <CheckCircle2 className="w-8 h-8 text-[#79c294] mx-auto" />
                   <div className="text-sm font-bold text-white">
                     {t('farmer.successTitle')}
                   </div>
                   <div className="text-xs text-[#9eb5a6]">
                     {t('farmer.successRef')}{" "}
-                    <strong className="font-mono text-white text-sm bg-[#1c3827] px-2 py-0.5 rounded border border-[#2e5e3f]">
+                    <strong className="font-mono text-white text-sm bg-[#1c3827] px-2 py-0.5 rounded-xs border border-[#2e5e3f]">
                       {grievanceSubmitted}
                     </strong>
                   </div>
@@ -435,7 +430,7 @@ export default function FarmerPortal() {
                   </p>
                   <button
                     onClick={() => setGrievanceSubmitted(null)}
-                    className="mt-2 px-3 py-1 text-xs bg-[#1f4230] hover:bg-[#28573f] text-white rounded transition-colors"
+                    className="mt-2 px-3 py-1 text-xs bg-[#1f4230] hover:bg-[#28573f] text-white rounded-xs transition-colors cursor-pointer"
                   >
                     {t('farmer.submitAnother')}
                   </button>
@@ -453,7 +448,7 @@ export default function FarmerPortal() {
                         onChange={(e) => setFarmerName(e.target.value)}
                         placeholder="e.g. Ramesh Tukaram Shinde"
                         required
-                        className="w-full bg-[#0d1410] border border-[#24392c] rounded-md px-3 py-2 text-white placeholder-[#5d7365] focus:outline-none focus:border-[#79c294]"
+                        className="w-full bg-[#0d1410] border border-[#24392c] rounded-xs px-3 py-2 text-white placeholder-[#5d7365] focus:outline-none focus:border-[#79c294]"
                       />
                     </div>
 
@@ -467,7 +462,7 @@ export default function FarmerPortal() {
                         onChange={(e) => setFarmerPhone(e.target.value)}
                         placeholder="e.g. 9822012345"
                         required
-                        className="w-full bg-[#0d1410] border border-[#24392c] rounded-md px-3 py-2 text-white placeholder-[#5d7365] focus:outline-none focus:border-[#79c294]"
+                        className="w-full bg-[#0d1410] border border-[#24392c] rounded-xs px-3 py-2 text-white placeholder-[#5d7365] focus:outline-none focus:border-[#79c294]"
                       />
                     </div>
 
@@ -478,7 +473,7 @@ export default function FarmerPortal() {
                       <select
                         value={objectionType}
                         onChange={(e) => setObjectionType(e.target.value)}
-                        className="w-full bg-[#0d1410] border border-[#24392c] rounded-md px-3 py-2 text-white focus:outline-none focus:border-[#79c294]"
+                        className="w-full bg-[#0d1410] border border-[#24392c] rounded-xs px-3 py-2 text-white focus:outline-none focus:border-[#79c294]"
                       >
                         <option value="Valuation / Compensation Dispute">Valuation / Compensation Dispute</option>
                         <option value="Boundary / Measurement Discrepancy">Boundary / Measurement Discrepancy</option>
@@ -500,7 +495,7 @@ export default function FarmerPortal() {
                       onChange={(e) => setDescription(e.target.value)}
                       placeholder="Please provide full facts: survey sub-division, unrecorded fruit-bearing trees, well depths, or disputed acreages..."
                       required
-                      className="w-full bg-[#0d1410] border border-[#24392c] rounded-md px-3 py-2 text-white placeholder-[#5d7365] focus:outline-none focus:border-[#79c294]"
+                      className="w-full bg-[#0d1410] border border-[#24392c] rounded-xs px-3 py-2 text-white placeholder-[#5d7365] focus:outline-none focus:border-[#79c294]"
                     />
                   </div>
 
@@ -511,7 +506,7 @@ export default function FarmerPortal() {
                     <button
                       type="submit"
                       disabled={grievanceSubmitting}
-                      className="px-4 py-2 bg-[#1f4230] hover:bg-[#27553e] text-white font-semibold rounded-md transition-colors flex items-center gap-1.5 shadow-sm disabled:opacity-50 cursor-pointer"
+                      className="px-4 py-2 bg-[#1f4230] hover:bg-[#27553e] text-white font-semibold rounded-xs transition-colors flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
                     >
                       <Send className="w-3.5 h-3.5" />
                       <span>{grievanceSubmitting ? t('farmer.submitting') : t('farmer.submitBtn')}</span>

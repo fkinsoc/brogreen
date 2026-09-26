@@ -132,14 +132,14 @@ export default function AlertsPage() {
           </div>
 
           {/* Filter Bar */}
-          <div className="flex items-center p-0.5 bg-[#eeeae0] dark:bg-[#1a251e] rounded-md border border-[#dedad1] dark:border-[#25342a] self-start sm:self-auto">
+          <div className="flex items-center p-0.5 bg-[#eeeae0] dark:bg-[#1a251e] rounded-xs border border-[#dedad1] dark:border-[#25342a] self-start sm:self-auto">
             {["All", "New", "Under Review", "Escalated", "Resolved"].map((status) => (
               <button
                 key={status}
                 onClick={() => setFilterStatus(status)}
-                className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
+                className={`px-3 py-1 rounded-xs text-xs font-medium transition-colors cursor-pointer ${
                   filterStatus === status
-                    ? "bg-[#1f4230] text-white shadow-2xs font-semibold"
+                    ? "bg-[#1f4230] text-white font-semibold"
                     : "text-[#58615a] dark:text-[#95a398] hover:text-[#181c19] dark:hover:text-white"
                 }`}
               >
@@ -155,9 +155,9 @@ export default function AlertsPage() {
             filteredAlerts.map((alert) => (
               <div
                 key={alert.id}
-                className="rounded-lg border border-[#e5e2da] dark:border-[#222f26] bg-white dark:bg-[#141d17] p-4 shadow-2xs flex flex-col sm:flex-row gap-3.5 hover:border-[#cfc9be] dark:hover:border-[#314236] transition-colors"
+                className="rounded-xs border border-[#e5e2da] dark:border-[#222f26] bg-white dark:bg-[#141d17] p-4 flex flex-col sm:flex-row gap-3.5 transition-colors"
               >
-                <div className="w-8 h-8 rounded-md bg-[#f6f5f0] dark:bg-[#18231c] border border-[#e2ded5] dark:border-[#26352b] flex items-center justify-center flex-shrink-0">
+                <div className="w-8 h-8 rounded-xs bg-[#f6f5f0] dark:bg-[#18231c] border border-[#e2ded5] dark:border-[#26352b] flex items-center justify-center flex-shrink-0">
                   {getAlertIcon(alert.type)}
                 </div>
 
@@ -169,7 +169,7 @@ export default function AlertsPage() {
                           {alert.title}
                         </h3>
                         <span
-                          className={`text-[10px] font-semibold px-1.5 py-0.5 rounded border ${getStatusBadge(
+                          className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-xs border ${getStatusBadge(
                             alert.status
                           )}`}
                         >
@@ -203,7 +203,7 @@ export default function AlertsPage() {
                   <div className="mt-3 pt-2.5 border-t border-[#f0ece5] dark:border-[#1d2720] flex flex-wrap items-center gap-2">
                     <Link
                       to={`/parcels/${alert.parcel.id}`}
-                      className="px-2.5 py-1 bg-[#1f4230] hover:bg-[#163324] text-white text-xs font-medium rounded transition-colors shadow-2xs"
+                      className="px-2.5 py-1 bg-[#1f4230] hover:bg-[#163324] text-white text-xs font-medium rounded-xs transition-colors"
                     >
                       View Parcel
                     </Link>
@@ -211,7 +211,7 @@ export default function AlertsPage() {
                     {alert.status !== "Escalated" && (
                       <button
                         onClick={() => handleUpdateStatus(alert.id, "Escalated")}
-                        className="px-2.5 py-1 border border-[#dcd7cd] dark:border-[#2b3a30] text-[#5a412f] dark:text-[#d69f6e] hover:bg-[#f6f5f0] dark:hover:bg-[#1c2720] text-xs font-medium rounded transition-colors"
+                        className="px-2.5 py-1 border border-[#dcd7cd] dark:border-[#2b3a30] text-[#5a412f] dark:text-[#d69f6e] hover:bg-[#f6f5f0] dark:hover:bg-[#1c2720] text-xs font-medium rounded-xs transition-colors cursor-pointer"
                       >
                         Escalate
                       </button>
@@ -220,7 +220,7 @@ export default function AlertsPage() {
                     {alert.status === "New" && (
                       <button
                         onClick={() => handleUpdateStatus(alert.id, "Under Review")}
-                        className="px-2.5 py-1 border border-[#dcd7cd] dark:border-[#2b3a30] text-[#24613b] dark:text-[#7fba96] hover:bg-[#f6f5f0] dark:hover:bg-[#1c2720] text-xs font-medium rounded transition-colors"
+                        className="px-2.5 py-1 border border-[#dcd7cd] dark:border-[#2b3a30] text-[#24613b] dark:text-[#7fba96] hover:bg-[#f6f5f0] dark:hover:bg-[#1c2720] text-xs font-medium rounded-xs transition-colors cursor-pointer"
                       >
                         Reviewing
                       </button>
@@ -229,7 +229,7 @@ export default function AlertsPage() {
                     {alert.status !== "Resolved" && (
                       <button
                         onClick={() => handleUpdateStatus(alert.id, "Resolved")}
-                        className="px-2 py-1 text-xs text-[#6e7770] dark:text-[#8c9c90] hover:text-[#181c19] dark:hover:text-white"
+                        className="px-2 py-1 text-xs text-[#6e7770] dark:text-[#8c9c90] hover:text-[#181c19] dark:hover:text-white cursor-pointer"
                       >
                         Mark Resolved
                       </button>
@@ -239,7 +239,7 @@ export default function AlertsPage() {
               </div>
             ))
           ) : (
-            <div className="flex flex-col items-center justify-center py-12 text-center rounded-lg border border-[#e5e2da] dark:border-[#222f26] bg-white dark:bg-[#141d17]">
+            <div className="flex flex-col items-center justify-center py-12 text-center rounded-xs border border-[#e5e2da] dark:border-[#222f26] bg-white dark:bg-[#141d17]">
               <CheckCircle2 className="w-8 h-8 mb-2 text-[#24613b]" />
               <div className="text-sm font-semibold text-[#181c19] dark:text-[#eff3ef]">
                 No warnings found

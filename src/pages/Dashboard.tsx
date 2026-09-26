@@ -13,8 +13,6 @@ import {
   PieChart,
   Pie,
   Cell,
-  AreaChart,
-  Area,
 } from "recharts";
 import {
   AlertTriangle,
@@ -22,9 +20,6 @@ import {
   ShieldAlert,
   Map as MapIcon,
   ArrowRight,
-  TrendingUp,
-  FileCheck2,
-  Filter,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "../lib/i18n";
@@ -141,7 +136,7 @@ export default function Dashboard() {
 
   return (
     <AppLayout>
-      <div className="space-y-5">
+      <div className="space-y-4">
         {/* Page Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-[#e5e2da] dark:border-[#212c24]">
           <div>
@@ -156,14 +151,14 @@ export default function Dashboard() {
           <div className="flex items-center gap-2">
             <Link
               to="/map"
-              className="px-3 py-1.5 text-xs font-medium text-[#181c19] dark:text-[#eff3ef] bg-white dark:bg-[#151e18] border border-[#dcd7cd] dark:border-[#2b3a30] rounded-md hover:bg-[#f6f5f0] dark:hover:bg-[#1c2720] transition-colors shadow-2xs flex items-center gap-1.5"
+              className="px-3 py-1.5 text-xs font-medium text-[#181c19] dark:text-[#eff3ef] bg-white dark:bg-[#151e18] border border-[#dcd7cd] dark:border-[#2b3a30] rounded-xs hover:bg-[#f6f5f0] dark:hover:bg-[#1c2720] transition-colors flex items-center gap-1.5"
             >
               <MapIcon className="w-3.5 h-3.5 text-[#37634b]" />
               <span>{t('nav.gisMap')}</span>
             </Link>
             <Link
               to="/parcels"
-              className="px-3 py-1.5 text-xs font-semibold text-white bg-[#1f4230] hover:bg-[#163324] rounded-md transition-colors shadow-2xs flex items-center gap-1.5"
+              className="px-3 py-1.5 text-xs font-semibold text-white bg-[#1f4230] hover:bg-[#163324] rounded-xs transition-colors flex items-center gap-1.5"
             >
               <span>{t('nav.parcels')}</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -171,9 +166,9 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* AI Insight Bar (Clean & Pragmatic, no sparkles or fake telemetry) */}
-        <div className="p-4 rounded-lg bg-[#ffffff] dark:bg-[#141d17] border border-[#e2ded5] dark:border-[#233127] shadow-2xs flex items-start gap-3">
-          <div className="w-6 h-6 rounded-md bg-[#eaf3ed] dark:bg-[#1c2c22] text-[#1f4230] dark:text-[#82c499] flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-semibold">
+        {/* AI Insight Bar */}
+        <div className="p-3.5 rounded-xs bg-white dark:bg-[#141d17] border border-[#e2ded5] dark:border-[#233127] flex items-start gap-3">
+          <div className="w-6 h-6 rounded-xs bg-[#eaf3ed] dark:bg-[#1c2c22] text-[#1f4230] dark:text-[#82c499] flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-semibold">
             AI
           </div>
           <div className="flex-1 min-w-0">
@@ -189,9 +184,9 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Core KPI Metrics */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-          <div className="p-4 rounded-lg bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26] shadow-2xs">
+        {/* Core KPI Metrics (No colored left stripes, no drop shadows, no soft corners) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <div className="p-3.5 rounded-xs bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26]">
             <div className="text-xs font-medium text-[#657067] dark:text-[#8c9c90]">
               {t('dashboard.totalParcels')}
             </div>
@@ -208,7 +203,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="p-4 rounded-lg bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26] border-l-4 border-l-[#a63529] shadow-2xs">
+          <div className="p-3.5 rounded-xs bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26]">
             <div className="text-xs font-medium text-[#657067] dark:text-[#8c9c90] flex items-center justify-between">
               <span>{t('dashboard.highRisk')}</span>
               <AlertTriangle className="w-3.5 h-3.5 text-[#a63529]" />
@@ -226,7 +221,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="p-4 rounded-lg bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26] border-l-4 border-l-[#a86927] shadow-2xs">
+          <div className="p-3.5 rounded-xs bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26]">
             <div className="text-xs font-medium text-[#657067] dark:text-[#8c9c90] flex items-center justify-between">
               <span>{t('dashboard.avgDelay')}</span>
               <Clock className="w-3.5 h-3.5 text-[#a86927]" />
@@ -242,7 +237,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="p-4 rounded-lg bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26] border-l-4 border-l-[#1f4230] shadow-2xs">
+          <div className="p-3.5 rounded-xs bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26]">
             <div className="text-xs font-medium text-[#657067] dark:text-[#8c9c90] flex items-center justify-between">
               <span>Active Issues</span>
               <ShieldAlert className="w-3.5 h-3.5 text-[#1f4230]" />
@@ -260,9 +255,9 @@ export default function Dashboard() {
         </div>
 
         {/* Charts Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5">
           {/* Stage Progression Bar Chart */}
-          <div className="lg:col-span-8 p-4 rounded-lg bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26] shadow-2xs flex flex-col">
+          <div className="lg:col-span-8 p-3.5 rounded-xs bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26] flex flex-col">
             <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#eeebe3] dark:border-[#1d2920]">
               <div>
                 <h3 className="text-sm font-semibold text-[#181c19] dark:text-[#eff3ef]">
@@ -305,7 +300,7 @@ export default function Dashboard() {
                     contentStyle={{
                       backgroundColor: "#131c16",
                       borderColor: "#28392d",
-                      borderRadius: "6px",
+                      borderRadius: "0px",
                       color: "#eff3ef",
                       fontSize: "12px",
                     }}
@@ -313,7 +308,7 @@ export default function Dashboard() {
                   <Bar
                     dataKey="parcels"
                     fill="#1f4230"
-                    radius={[3, 3, 0, 0]}
+                    radius={[0, 0, 0, 0]}
                     maxBarSize={42}
                   />
                 </BarChart>
@@ -322,7 +317,7 @@ export default function Dashboard() {
           </div>
 
           {/* Risk Tier Donut */}
-          <div className="lg:col-span-4 p-4 rounded-lg bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26] shadow-2xs flex flex-col">
+          <div className="lg:col-span-4 p-3.5 rounded-xs bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26] flex flex-col">
             <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#eeebe3] dark:border-[#1d2920]">
               <div>
                 <h3 className="text-sm font-semibold text-[#181c19] dark:text-[#eff3ef]">
@@ -355,7 +350,7 @@ export default function Dashboard() {
                     contentStyle={{
                       backgroundColor: "#131c16",
                       borderColor: "#28392d",
-                      borderRadius: "6px",
+                      borderRadius: "0px",
                       color: "#eff3ef",
                       fontSize: "12px",
                     }}
@@ -372,9 +367,9 @@ export default function Dashboard() {
         </div>
 
         {/* Bottom Section: Primary Friction Categories & Watchlist */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5">
           {/* Causes of Delay */}
-          <div className="lg:col-span-5 p-4 rounded-lg bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26] shadow-2xs flex flex-col">
+          <div className="lg:col-span-5 p-3.5 rounded-xs bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26] flex flex-col">
             <div className="pb-3 mb-3 border-b border-[#eeebe3] dark:border-[#1d2920]">
               <h3 className="text-sm font-semibold text-[#181c19] dark:text-[#eff3ef]">
                 Bottleneck Frequency by Issue
@@ -395,9 +390,9 @@ export default function Dashboard() {
                       {item.count} plots
                     </span>
                   </div>
-                  <div className="w-full bg-[#eeeae0] dark:bg-[#1d2820] h-1.5 rounded-full overflow-hidden">
+                  <div className="w-full bg-[#eeeae0] dark:bg-[#1d2820] h-1.5 overflow-hidden">
                     <div
-                      className="bg-[#5a412f] dark:bg-[#8c674b] h-1.5 rounded-full"
+                      className="bg-[#5a412f] dark:bg-[#8c674b] h-1.5"
                       style={{
                         width: `${Math.min((item.count / 30) * 100, 100)}%`,
                       }}
@@ -409,8 +404,8 @@ export default function Dashboard() {
           </div>
 
           {/* Critical Watchlist Data Table */}
-          <div className="lg:col-span-7 rounded-lg bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26] shadow-2xs overflow-hidden flex flex-col">
-            <div className="p-4 border-b border-[#eeebe3] dark:border-[#1d2920] flex items-center justify-between">
+          <div className="lg:col-span-7 rounded-xs bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26] overflow-hidden flex flex-col">
+            <div className="p-3.5 border-b border-[#eeebe3] dark:border-[#1d2920] flex items-center justify-between">
               <div>
                 <h3 className="text-sm font-semibold text-[#181c19] dark:text-[#eff3ef]">
                   High-Priority Watchlist

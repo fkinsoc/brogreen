@@ -4,17 +4,8 @@ import { staticParcels } from "../lib/data";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import {
   ArrowLeft,
-  MapPin,
-  FileText,
-  Scale,
-  User,
-  Calendar,
-  Clock,
   ChevronRight,
-  ShieldAlert,
-  CheckCircle2,
 } from "lucide-react";
-import { format } from "date-fns";
 import MapView from "../components/ParcelMap";
 
 export default function ParcelDetails() {
@@ -63,7 +54,7 @@ export default function ParcelDetails() {
           </p>
           <button
             onClick={() => navigate("/parcels")}
-            className="mt-4 px-3.5 py-1.5 bg-[#1f4230] text-white text-xs font-semibold rounded-md shadow-2xs hover:bg-[#163324] transition-colors"
+            className="mt-4 px-3.5 py-1.5 bg-[#1f4230] text-white text-xs font-semibold rounded-xs hover:bg-[#163324] transition-colors"
           >
             Back to Parcels List
           </button>
@@ -104,7 +95,7 @@ export default function ParcelDetails() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => navigate(-1)}
-              className="p-1 rounded border border-[#dcd7cd] dark:border-[#2b3a30] text-[#58615a] dark:text-[#95a398] hover:bg-[#eeebe3] dark:hover:bg-[#1c2720] transition-colors"
+              className="p-1 rounded-xs border border-[#dcd7cd] dark:border-[#2b3a30] text-[#58615a] dark:text-[#95a398] hover:bg-[#eeebe3] dark:hover:bg-[#1c2720] transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
             </button>
@@ -113,7 +104,7 @@ export default function ParcelDetails() {
                 <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#181c19] dark:text-[#eff3ef]">
                   Parcel {parcel.id}
                 </h1>
-                <span className={`px-2 py-0.5 rounded text-xs font-semibold border ${getRiskBadge()}`}>
+                <span className={`px-2 py-0.5 rounded-xs text-xs font-semibold border ${getRiskBadge()}`}>
                   {parcel.riskLevel} Risk ({parcel.riskScore}/100)
                 </span>
               </div>
@@ -132,172 +123,131 @@ export default function ParcelDetails() {
         </div>
 
         {/* AI Tactical Recommendation */}
-        <div className="p-3.5 rounded-lg bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26] shadow-2xs flex items-start gap-3">
-          <div className="w-6 h-6 rounded-md bg-[#eaf3ed] dark:bg-[#1c2c22] text-[#1f4230] dark:text-[#82c499] flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-semibold">
+        <div className="p-3.5 rounded-xs bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26] flex items-start gap-3">
+          <div className="w-6 h-6 rounded-xs bg-[#eaf3ed] dark:bg-[#1c2c22] text-[#1f4230] dark:text-[#82c499] flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-semibold">
             AI
           </div>
           <div className="flex-1 min-w-0">
             <div className="text-xs font-semibold text-[#181c19] dark:text-[#eff3ef]">
-              Risk Assessment & Recommendation
+              Tactical Acquisition Recommendation
             </div>
-            <p className="text-xs text-[#4d564f] dark:text-[#abb6ad] mt-0.5 leading-relaxed">
+            <p className="text-xs text-[#444d46] dark:text-[#b4c0b6] mt-0.5 leading-relaxed">
               {loadingAi
-                ? "Synthesizing mitigation strategy..."
+                ? "Analyzing survey data and calculating optimal intervention route..."
                 : aiInsight ||
-                  `Title objections on record for survey ${parcel.surveyNumber}. Convene conciliation session with registered owners to prevent a ${parcel.predictedDelayDays}-day delay on the corridor timeline.`}
+                  parcel.recommendedAction ||
+                  "Ensure joint measurement confirmation with revenue officers to avoid boundary disputes."}
             </p>
           </div>
         </div>
 
-        {/* Grid Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-          {/* Left: Metadata & Map */}
-          <div className="lg:col-span-8 space-y-4">
-            {/* Metadata Card */}
-            <div className="p-4 rounded-lg bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26] shadow-2xs">
-              <h3 className="text-xs font-semibold text-[#181c19] dark:text-[#eff3ef] uppercase tracking-wider mb-3 pb-2 border-b border-[#eeebe3] dark:border-[#1d2920]">
-                Property Details
-              </h3>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                <div className="space-y-3">
-                  <div>
-                    <span className="text-[#6e7770] dark:text-[#8c9c90] block text-[11px]">Location</span>
-                    <span className="font-medium text-[#181c19] dark:text-[#eff3ef]">
-                      {parcel.village}, {parcel.district}, {parcel.state}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-[#6e7770] dark:text-[#8c9c90] block text-[11px]">Survey Number & Area</span>
-                    <span className="font-medium text-[#181c19] dark:text-[#eff3ef]">
-                      {parcel.surveyNumber} · {parcel.areaAcres} Acres
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-[#6e7770] dark:text-[#8c9c90] block text-[11px]">Registered Owner</span>
-                    <span className="font-medium text-[#181c19] dark:text-[#eff3ef]">
-                      {parcel.landOwner} ({parcel.numberOfOwners} owner{parcel.numberOfOwners > 1 ? "s" : ""})
-                    </span>
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  <div>
-                    <span className="text-[#6e7770] dark:text-[#8c9c90] block text-[11px]">Legal Dispute</span>
-                    <span className={`font-medium ${parcel.legalDisputeStatus === "Active Case" ? "text-[#a63529]" : "text-[#181c19] dark:text-[#eff3ef]"}`}>
-                      {parcel.legalDisputeStatus}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-[#6e7770] dark:text-[#8c9c90] block text-[11px]">Compensation Status</span>
-                    <span className="font-medium text-[#181c19] dark:text-[#eff3ef]">
-                      {parcel.compensationStatus}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-[#6e7770] dark:text-[#8c9c90] block text-[11px]">Timeline</span>
-                    <span className="font-medium text-[#181c19] dark:text-[#eff3ef]">
-                      Started: {format(new Date(parcel.acquisitionStartDate), "MMM d, yyyy")}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Map Card */}
-            <div className="rounded-lg bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26] shadow-2xs overflow-hidden">
-              <div className="p-3 border-b border-[#eeebe3] dark:border-[#1d2920] flex items-center justify-between">
-                <span className="text-xs font-semibold text-[#181c19] dark:text-[#eff3ef]">
-                  Geographic Location
-                </span>
-                <span className="text-[11px] font-mono text-[#6e7770] dark:text-[#8c9c90]">
-                  {parcel.lat.toFixed(4)}, {parcel.lng.toFixed(4)}
-                </span>
-              </div>
-              <div className="h-[320px]">
-                <MapView parcel={parcel} />
-              </div>
+        {/* Key Metrics Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+          <div className="p-3 rounded-xs bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26]">
+            <div className="text-[11px] text-[#58615a] dark:text-[#95a398]">Area</div>
+            <div className="text-lg font-bold font-mono text-[#181c19] dark:text-[#eff3ef] mt-1">
+              {parcel.areaAcres} Acres
             </div>
           </div>
 
-          {/* Right: Risk Model Analysis */}
-          <div className="lg:col-span-4 space-y-4">
-            <div className="p-4 rounded-lg bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26] shadow-2xs">
-              <h3 className="text-xs font-semibold text-[#181c19] dark:text-[#eff3ef] uppercase tracking-wider mb-3 pb-2 border-b border-[#eeebe3] dark:border-[#1d2920]">
-                Predicted Delay
+          <div className="p-3 rounded-xs bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26]">
+            <div className="text-[11px] text-[#58615a] dark:text-[#95a398]">Predicted Delay</div>
+            <div className="text-lg font-bold font-mono text-[#a86927] dark:text-[#dfa364] mt-1">
+              +{parcel.predictedDelayDays} Days
+            </div>
+          </div>
+
+          <div className="p-3 rounded-xs bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26]">
+            <div className="text-[11px] text-[#58615a] dark:text-[#95a398]">Delay Probability</div>
+            <div className="text-lg font-bold font-mono text-[#181c19] dark:text-[#eff3ef] mt-1">
+              {parcel.delayProbability}%
+            </div>
+          </div>
+
+          <div className="p-3 rounded-xs bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26]">
+            <div className="text-[11px] text-[#58615a] dark:text-[#95a398]">Primary Landowner</div>
+            <div className="text-sm font-semibold text-[#181c19] dark:text-[#eff3ef] truncate mt-1">
+              {parcel.landOwner}
+            </div>
+          </div>
+        </div>
+
+        {/* Two-Column Details & GIS Preview */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+          {/* Detailed Attributes */}
+          <div className="lg:col-span-7 space-y-4">
+            <div className="p-4 rounded-xs bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26] space-y-3">
+              <h3 className="text-xs font-semibold text-[#181c19] dark:text-[#eff3ef] uppercase tracking-wider pb-2 border-b border-[#eeebe3] dark:border-[#1d2920]">
+                Cadastral & Legal Status
               </h3>
 
-              <div className="flex items-baseline justify-between mb-3">
-                <span className="text-xs text-[#58615a] dark:text-[#95a398]">Overrun Estimate:</span>
-                <span className="text-2xl font-bold font-mono text-[#a86927] dark:text-[#e0a262]">
-                  +{parcel.predictedDelayDays} days
-                </span>
-              </div>
-
-              <div className="text-xs space-y-2 pt-2 border-t border-[#eeebe3] dark:border-[#1d2920]">
-                <div className="flex justify-between">
-                  <span className="text-[#6e7770] dark:text-[#8c9c90]">Delay Probability:</span>
-                  <span className="font-semibold text-[#181c19] dark:text-[#eff3ef] font-mono">
-                    {parcel.delayProbability}%
+              <div className="grid grid-cols-2 gap-3 text-xs">
+                <div>
+                  <span className="text-[#58615a] dark:text-[#95a398] block">Legal Dispute:</span>
+                  <span className="font-semibold text-[#181c19] dark:text-[#eff3ef]">
+                    {parcel.legalDisputeStatus}
                   </span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-[#6e7770] dark:text-[#8c9c90]">Composite Risk Index:</span>
-                  <span className="font-semibold text-[#181c19] dark:text-[#eff3ef] font-mono">
-                    {parcel.riskScore}/100
+                <div>
+                  <span className="text-[#58615a] dark:text-[#95a398] block">Compensation:</span>
+                  <span className="font-semibold text-[#181c19] dark:text-[#eff3ef]">
+                    {parcel.compensationStatus}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-[#58615a] dark:text-[#95a398] block">Ownership Check:</span>
+                  <span className="font-semibold text-[#181c19] dark:text-[#eff3ef]">
+                    {parcel.ownershipVerificationStatus}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-[#58615a] dark:text-[#95a398] block">Documentation:</span>
+                  <span className="font-semibold text-[#181c19] dark:text-[#eff3ef]">
+                    {parcel.documentationStatus}
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* Factor breakdown */}
-            <div className="p-4 rounded-lg bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26] shadow-2xs">
-              <h3 className="text-xs font-semibold text-[#181c19] dark:text-[#eff3ef] uppercase tracking-wider mb-3 pb-2 border-b border-[#eeebe3] dark:border-[#1d2920]">
-                Risk Factor Breakdown
+            {/* Top Contributing Risk Drivers */}
+            <div className="p-4 rounded-xs bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26] space-y-3">
+              <h3 className="text-xs font-semibold text-[#181c19] dark:text-[#eff3ef] uppercase tracking-wider pb-2 border-b border-[#eeebe3] dark:border-[#1d2920]">
+                Contributing Risk Drivers
               </h3>
 
-              <div className="space-y-3">
-                {parcel.topRiskFactors.map((factor, idx) => (
-                  <div key={idx}>
-                    <div className="flex justify-between text-xs mb-1">
-                      <span className="text-[#363e38] dark:text-[#d3ded5]">
-                        {factor.factor}
+              <div className="space-y-2.5">
+                {parcel.topRiskFactors.map((rf, idx) => (
+                  <div key={idx} className="text-xs">
+                    <div className="flex justify-between mb-1">
+                      <span className="text-[#181c19] dark:text-[#eff3ef] font-medium">
+                        {rf.factor}
                       </span>
-                      <span className="font-mono text-[#6e7770] dark:text-[#8c9c90]">
-                        {factor.contribution}%
+                      <span className="font-mono text-[#a86927] dark:text-[#dfa364]">
+                        {rf.contribution}% contribution
                       </span>
                     </div>
-                    <div className="w-full bg-[#eeeae0] dark:bg-[#1f2b23] h-1.5 rounded-full overflow-hidden">
+                    <div className="w-full bg-[#eeeae0] dark:bg-[#1d2820] h-1.5 overflow-hidden">
                       <div
-                        className={`h-full rounded-full ${
-                          idx === 0
-                            ? "bg-[#a63529]"
-                            : idx === 1
-                            ? "bg-[#a86927]"
-                            : "bg-[#1f4230]"
-                        }`}
-                        style={{ width: `${factor.contribution}%` }}
+                        className="bg-[#a86927] h-1.5"
+                        style={{ width: `${rf.contribution}%` }}
                       />
                     </div>
                   </div>
                 ))}
               </div>
             </div>
+          </div>
 
-            {/* Recommended action */}
-            <div className="p-4 rounded-lg bg-[#faf9f6] dark:bg-[#121914] border border-[#e5e2da] dark:border-[#222f26] shadow-2xs">
-              <h3 className="text-xs font-semibold text-[#181c19] dark:text-[#eff3ef] uppercase tracking-wider mb-2">
-                Recommended Action
-              </h3>
-              <p className="text-xs text-[#4d564f] dark:text-[#abb6ad] leading-relaxed mb-3">
-                {parcel.recommendedAction}
-              </p>
-              <button
-                onClick={() => alert(`Status logged for parcel ${parcel.id}`)}
-                className="w-full py-2 bg-[#1f4230] hover:bg-[#163324] text-white text-xs font-semibold rounded-md shadow-2xs transition-colors"
-              >
-                Mark Action as In-Progress
-              </button>
+          {/* GIS Map View */}
+          <div className="lg:col-span-5 rounded-xs border border-[#e5e2da] dark:border-[#222f26] bg-[#101712] overflow-hidden min-h-[300px] flex flex-col">
+            <div className="p-3 border-b border-[#212c24] bg-[#111813] text-xs font-semibold text-[#eff3ef]">
+              Spatial Cadastral Overlay
+            </div>
+            <div className="flex-1 relative">
+              <MapView
+                parcel={parcel}
+                allParcels={[parcel]}
+              />
             </div>
           </div>
         </div>

@@ -108,8 +108,8 @@ export default function ParcelMap({
 
   if (!apiKey) {
     return (
-      <div className="w-full h-full flex flex-col items-center justify-center bg-[#f7f5f0] dark:bg-[#141b16] border border-[#ded7cb] dark:border-[#27352b] p-6 text-center rounded-lg">
-        <h3 className="font-serif text-sm font-semibold text-[#1e1b18] dark:text-[#ece7dd] mb-1">
+      <div className="w-full h-full flex flex-col items-center justify-center bg-[#f7f5f0] dark:bg-[#141b16] border border-[#ded7cb] dark:border-[#27352b] p-6 text-center rounded-xs">
+        <h3 className="text-sm font-semibold text-[#1e1b18] dark:text-[#ece7dd] mb-1">
           Google Maps Demo Key Not Set
         </h3>
         <p className="text-xs text-[#6e6659] dark:text-[#9ea89f] mb-3 max-w-sm">
@@ -119,7 +119,7 @@ export default function ParcelMap({
           href="https://mapsplatform.google.com/maps-demo-key?utm_campaign=gmp_mcp_codeassist_v1_aistudio"
           target="_blank"
           rel="noopener noreferrer"
-          className="px-3.5 py-1.5 bg-[#244231] hover:bg-[#1b3527] text-[#f7f5f0] text-xs font-medium rounded transition-colors shadow-xs"
+          className="px-3.5 py-1.5 bg-[#244231] hover:bg-[#1b3527] text-[#f7f5f0] text-xs font-medium rounded-xs transition-colors"
         >
           Acquire Demo Maps Key
         </a>

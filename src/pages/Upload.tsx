@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import AppLayout from "../components/Layout";
 import {
   UploadCloud,
-  File,
-  AlertCircle,
   CheckCircle2,
   Download,
+  AlertCircle,
 } from "lucide-react";
 import Papa from "papaparse";
 
@@ -73,7 +72,7 @@ export default function DataUploadPage() {
 
   return (
     <AppLayout>
-      <div className="max-w-4xl mx-auto space-y-5">
+      <div className="max-w-4xl mx-auto space-y-4">
         {/* Header */}
         <div className="pb-3 border-b border-[#e5e2da] dark:border-[#212c24]">
           <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#181c19] dark:text-[#eff3ef]">
@@ -84,33 +83,33 @@ export default function DataUploadPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
           {/* Main Ingestion Dropzone */}
           <div className="md:col-span-8 space-y-4">
             <div
               onDragOver={(e) => e.preventDefault()}
               onDrop={handleDrop}
-              className={`border-2 border-dashed rounded-lg p-8 flex flex-col items-center justify-center text-center transition-all ${
+              className={`border-2 border-dashed rounded-xs p-8 flex flex-col items-center justify-center text-center transition-colors ${
                 file
                   ? "border-[#1f4230] bg-[#eef5f0] dark:bg-[#152219]"
-                  : "border-[#dcd7cd] dark:border-[#2a382f] hover:border-[#1f4230] bg-white dark:bg-[#141d17]"
+                  : "border-[#dcd7cd] dark:border-[#2a382f] bg-white dark:bg-[#141d17]"
               }`}
             >
-              <div className="w-12 h-12 rounded-full bg-[#f4f3ef] dark:bg-[#1a251e] flex items-center justify-center text-[#1f4230] dark:text-[#82c499] mb-3">
-                <UploadCloud className="w-6 h-6" />
+              <div className="w-10 h-10 rounded-xs bg-[#f4f3ef] dark:bg-[#1a251e] flex items-center justify-center text-[#1f4230] dark:text-[#82c499] mb-3">
+                <UploadCloud className="w-5 h-5" />
               </div>
 
               <h3 className="text-sm font-semibold text-[#181c19] dark:text-[#eff3ef] mb-1">
-                {file ? file.name : "Drag & drop CSV or Excel file"}
+                {file ? file.name : "Select or Drop CSV / Excel Spreadsheet"}
               </h3>
               <p className="text-xs text-[#58615a] dark:text-[#95a398] mb-4">
                 {file
                   ? `${(file.size / 1024).toFixed(1)} KB`
-                  : "Supports .csv and .xlsx files up to 25MB"}
+                  : "Supports standard .csv and .xlsx cadastral extracts up to 25MB"}
               </p>
 
               {!file && (
-                <label className="px-3.5 py-1.5 bg-[#1f4230] hover:bg-[#163324] text-white text-xs font-semibold rounded-md cursor-pointer transition-colors shadow-2xs">
+                <label className="px-3.5 py-1.5 bg-[#1f4230] hover:bg-[#163324] text-white text-xs font-semibold rounded-xs cursor-pointer transition-colors">
                   Browse Files
                   <input
                     type="file"
@@ -125,13 +124,13 @@ export default function DataUploadPage() {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={handleUpload}
-                    className="px-3.5 py-1.5 bg-[#1f4230] hover:bg-[#163324] text-white text-xs font-semibold rounded-md transition-colors shadow-2xs"
+                    className="px-3.5 py-1.5 bg-[#1f4230] hover:bg-[#163324] text-white text-xs font-semibold rounded-xs transition-colors cursor-pointer"
                   >
                     Process File
                   </button>
                   <button
                     onClick={() => setFile(null)}
-                    className="px-3 py-1.5 border border-[#dcd7cd] dark:border-[#2a382f] text-[#58615a] dark:text-[#95a398] hover:bg-[#eeebe3] dark:hover:bg-[#1a251e] text-xs font-medium rounded-md transition-colors"
+                    className="px-3 py-1.5 border border-[#dcd7cd] dark:border-[#2a382f] text-[#58615a] dark:text-[#95a398] hover:bg-[#eeebe3] dark:hover:bg-[#1a251e] text-xs font-medium rounded-xs transition-colors cursor-pointer"
                   >
                     Cancel
                   </button>
@@ -141,14 +140,14 @@ export default function DataUploadPage() {
 
             {/* Pipeline progress */}
             {uploading && (
-              <div className="rounded-lg border border-[#e5e2da] dark:border-[#222f26] bg-white dark:bg-[#141d17] p-4 shadow-2xs">
+              <div className="rounded-xs border border-[#e5e2da] dark:border-[#222f26] bg-white dark:bg-[#141d17] p-4">
                 <div className="flex justify-between items-center text-xs font-semibold text-[#181c19] dark:text-[#eff3ef] mb-2">
                   <span>Validating & Merging Records</span>
                   <span className="font-mono">{progress}%</span>
                 </div>
-                <div className="w-full bg-[#eeeae0] dark:bg-[#1a251e] rounded-full h-1.5 overflow-hidden">
+                <div className="w-full bg-[#eeeae0] dark:bg-[#1a251e] h-1.5 overflow-hidden">
                   <div
-                    className="bg-[#1f4230] dark:bg-[#37634b] h-1.5 rounded-full transition-all duration-150"
+                    className="bg-[#1f4230] dark:bg-[#37634b] h-1.5 transition-all duration-150"
                     style={{ width: `${progress}%` }}
                   />
                 </div>
@@ -157,16 +156,16 @@ export default function DataUploadPage() {
 
             {/* Result Box */}
             {result && (
-              <div className="rounded-lg border border-[#cbe1d3] dark:border-[#274031] bg-[#eef5f0] dark:bg-[#142018] p-4 shadow-2xs">
+              <div className="rounded-xs border border-[#cbe1d3] dark:border-[#274031] bg-[#eef5f0] dark:bg-[#142018] p-4">
                 <div className="flex items-center gap-2.5 mb-3">
-                  <CheckCircle2 className="w-5 h-5 text-[#24613b]" />
+                  <CheckCircle2 className="w-4 h-4 text-[#24613b]" />
                   <div className="text-sm font-semibold text-[#181c19] dark:text-[#eff3ef]">
                     Upload Complete
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-2.5 text-center">
-                  <div className="bg-white dark:bg-[#17241c] p-2.5 rounded border border-[#cbe1d3] dark:border-[#274031]">
+                <div className="grid grid-cols-3 gap-2 text-center">
+                  <div className="bg-white dark:bg-[#17241c] p-2.5 rounded-xs border border-[#cbe1d3] dark:border-[#274031]">
                     <div className="text-[10px] text-[#58615a] dark:text-[#95a398] uppercase">
                       Total Rows
                     </div>
@@ -174,7 +173,7 @@ export default function DataUploadPage() {
                       {result.totalRows}
                     </div>
                   </div>
-                  <div className="bg-white dark:bg-[#17241c] p-2.5 rounded border border-[#cbe1d3] dark:border-[#274031]">
+                  <div className="bg-white dark:bg-[#17241c] p-2.5 rounded-xs border border-[#cbe1d3] dark:border-[#274031]">
                     <div className="text-[10px] text-[#58615a] dark:text-[#95a398] uppercase">
                       Valid
                     </div>
@@ -182,7 +181,7 @@ export default function DataUploadPage() {
                       {result.validRows}
                     </div>
                   </div>
-                  <div className="bg-white dark:bg-[#17241c] p-2.5 rounded border border-[#cbe1d3] dark:border-[#274031]">
+                  <div className="bg-white dark:bg-[#17241c] p-2.5 rounded-xs border border-[#cbe1d3] dark:border-[#274031]">
                     <div className="text-[10px] text-[#58615a] dark:text-[#95a398] uppercase">
                       Errors
                     </div>
@@ -199,7 +198,7 @@ export default function DataUploadPage() {
                       setFile(null);
                       setProgress(0);
                     }}
-                    className="text-xs font-semibold text-[#1f4230] dark:text-[#82c499] hover:underline"
+                    className="text-xs font-semibold text-[#1f4230] dark:text-[#82c499] hover:underline cursor-pointer"
                   >
                     Upload Another File →
                   </button>
@@ -209,8 +208,8 @@ export default function DataUploadPage() {
           </div>
 
           {/* Right Info: Schema */}
-          <div className="md:col-span-4 space-y-4">
-            <div className="rounded-lg border border-[#e5e2da] dark:border-[#222f26] bg-white dark:bg-[#141d17] p-4 shadow-2xs">
+          <div className="md:col-span-4 space-y-3">
+            <div className="rounded-xs border border-[#e5e2da] dark:border-[#222f26] bg-white dark:bg-[#141d17] p-4">
               <h3 className="text-xs font-semibold text-[#181c19] dark:text-[#eff3ef] uppercase tracking-wider mb-2">
                 Supported Columns
               </h3>
@@ -230,17 +229,17 @@ export default function DataUploadPage() {
 
               <button
                 onClick={handleDownloadTemplate}
-                className="mt-4 w-full inline-flex items-center justify-center gap-1.5 py-1.5 border border-[#dcd7cd] dark:border-[#2b3a30] text-[#181c19] dark:text-[#eff3ef] hover:bg-[#f6f5f0] dark:hover:bg-[#1c2720] text-xs font-medium rounded transition-colors"
+                className="mt-4 w-full inline-flex items-center justify-center gap-1.5 py-1.5 border border-[#dcd7cd] dark:border-[#2b3a30] text-[#181c19] dark:text-[#eff3ef] hover:bg-[#f6f5f0] dark:hover:bg-[#1c2720] text-xs font-medium rounded-xs transition-colors cursor-pointer"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>Download Sample CSV</span>
               </button>
             </div>
 
-            <div className="rounded-lg border border-[#eeebe3] dark:border-[#222f26] bg-[#faf9f6] dark:bg-[#121914] p-3.5 flex gap-2.5 text-xs text-[#58615a] dark:text-[#95a398]">
+            <div className="rounded-xs border border-[#dedad1] dark:border-[#222f26] bg-[#faf9f6] dark:bg-[#121914] p-3.5 flex gap-2.5 text-xs text-[#58615a] dark:text-[#95a398]">
               <AlertCircle className="w-4 h-4 text-[#a86927] flex-shrink-0 mt-0.5" />
               <div>
-                Uploaded data is parsed locally and validated before submission to the database.
+                Uploaded data is validated client-side and verified before updating cadastral database records.
               </div>
             </div>
           </div>
