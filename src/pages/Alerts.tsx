@@ -9,6 +9,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "../lib/i18n";
 
 type AlertType = "HIGH_RISK" | "LEGAL_DISPUTE" | "LONG_DELAY" | "DOCUMENTATION";
 
@@ -23,6 +24,7 @@ interface Alert {
 }
 
 export default function AlertsPage() {
+  const { t } = useTranslation();
   const [filterStatus, setFilterStatus] = useState<string>("All");
 
   const initialAlerts = useMemo(() => {
@@ -122,10 +124,10 @@ export default function AlertsPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-[#e5e2da] dark:border-[#212c24]">
           <div>
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#181c19] dark:text-[#eff3ef]">
-              Early Warnings
+              {t('alerts.title')}
             </h1>
             <p className="text-xs text-[#58615a] dark:text-[#95a398] mt-0.5">
-              Automated alerts for high-risk parcels, legal holds, and timeline delays.
+              {t('alerts.subtitle')}
             </p>
           </div>
 

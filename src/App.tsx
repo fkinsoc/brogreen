@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./lib/auth-context";
+import { LanguageProvider } from "./lib/i18n";
 import Dashboard from "./pages/Dashboard";
 import ParcelsPage from "./pages/Parcels";
 import ParcelDetails from "./pages/ParcelDetails";
@@ -15,25 +16,27 @@ import LegalPage from "./pages/Legal";
 import FarmerPortal from "./pages/FarmerPortal";
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/parcels" element={<ParcelsPage />} />
-          <Route path="/parcels/:id" element={<ParcelDetails />} />
-          <Route path="/map" element={<GISMapPage />} />
-          <Route path="/alerts" element={<AlertsPage />} />
-          <Route path="/upload" element={<DataUploadPage />} />
-          <Route path="/reports" element={<ReportsPage />} />
-          <Route path="/logs" element={<LogsPage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-          <Route path="/farmer-portal" element={<FarmerPortal />} />
-          <Route path="/farmer" element={<FarmerPortal />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/legal" element={<LegalPage />} />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+    <LanguageProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/parcels" element={<ParcelsPage />} />
+            <Route path="/parcels/:id" element={<ParcelDetails />} />
+            <Route path="/map" element={<GISMapPage />} />
+            <Route path="/alerts" element={<AlertsPage />} />
+            <Route path="/upload" element={<DataUploadPage />} />
+            <Route path="/reports" element={<ReportsPage />} />
+            <Route path="/logs" element={<LogsPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/farmer-portal" element={<FarmerPortal />} />
+            <Route path="/farmer" element={<FarmerPortal />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/legal" element={<LegalPage />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+    </LanguageProvider>
   );
 }
 export default App;

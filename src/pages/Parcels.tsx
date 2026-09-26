@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import AppLayout from "../components/Layout";
 import { staticParcels, RiskLevel, Parcel } from "../lib/data";
 import { Link, useSearchParams } from "react-router-dom";
+import { useTranslation } from "../lib/i18n";
 import {
   Search,
   ChevronLeft,
@@ -15,6 +16,7 @@ import { motion, AnimatePresence } from "motion/react";
 
 export default function ParcelsPage() {
   const [parcels, setParcels] = useState<Parcel[]>(staticParcels);
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const urlQuery = searchParams.get("q") || searchParams.get("search") || "";
   const [searchTerm, setSearchTerm] = useState(urlQuery);
@@ -137,19 +139,19 @@ export default function ParcelsPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-[#e5e2da] dark:border-[#212c24]">
           <div>
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#181c19] dark:text-[#eff3ef]">
-              Land Parcels
+              {t('parcels.title')}
             </h1>
             <p className="text-xs text-[#58615a] dark:text-[#95a398] mt-0.5">
-              Comprehensive registry of surveyed land holdings and risk classifications.
+              {t('parcels.subtitle')}
             </p>
           </div>
 
           <button
             onClick={() => setIsAddModalOpen(true)}
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#1f4230] hover:bg-[#163324] text-white text-xs font-semibold rounded-md transition-colors shadow-2xs self-start sm:self-auto"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#1f4230] hover:bg-[#163324] text-white text-xs font-semibold rounded-md transition-colors shadow-2xs self-start sm:self-auto cursor-pointer"
           >
             <Plus className="w-3.5 h-3.5" />
-            <span>Add Parcel</span>
+            <span>{t('parcels.registerBtn')}</span>
           </button>
         </div>
 
@@ -162,7 +164,7 @@ export default function ParcelsPage() {
               <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#828c84]" />
               <input
                 type="text"
-                placeholder="Search by ID, owner, village, survey..."
+                placeholder={t('parcels.searchPlaceholder')}
                 value={searchTerm}
                 onChange={(e) => handleSearchChange(e.target.value)}
                 className="w-full pl-8 pr-7 py-1.5 text-xs bg-white dark:bg-[#18231c] border border-[#dcd7cd] dark:border-[#2b3a30] rounded-md text-[#181c19] dark:text-[#eff3ef] placeholder-[#828c84] focus:outline-none focus:ring-1 focus:ring-[#1f4230] focus:border-[#1f4230]"
@@ -171,7 +173,7 @@ export default function ParcelsPage() {
                 <button
                   onClick={handleClearSearch}
                   title="Clear search"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-[#828c84] hover:text-white p-0.5 rounded"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-[#828c84] hover:text-white p-0.5 rounded cursor-pointer"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
@@ -181,7 +183,7 @@ export default function ParcelsPage() {
             {/* Stats and Segmented Filter Control */}
             <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
               <span className="text-[11px] text-[#6e7770] dark:text-[#8c9c90] hidden md:inline">
-                Showing {filteredParcels.length} of {parcels.length} parcels
+                {t('parcels.showingCount', { count: filteredParcels.length, total: parcels.length })}
               </span>
 
               <div className="flex items-center p-0.5 bg-[#eeeae0] dark:bg-[#1a251e] rounded-md border border-[#dedad1] dark:border-[#25342a]">
@@ -198,7 +200,13 @@ export default function ParcelsPage() {
                         : "text-[#58615a] dark:text-[#95a398] hover:text-[#181c19] dark:hover:text-white"
                     }`}
                   >
-                    {lvl === "All" ? "All Risk" : `${lvl} Risk`}
+                    {lvl === "All"
+                      ? t('parcels.filterAll')
+                      : lvl === "High"
+                      ? t('parcels.filterHigh')
+                      : lvl === "Medium"
+                      ? t('parcels.filterMedium')
+                      : t('parcels.filterLow')}
                   </button>
                 ))}
               </div>
@@ -210,14 +218,14 @@ export default function ParcelsPage() {
             <table className="w-full text-xs text-left whitespace-nowrap">
               <thead className="text-[11px] font-semibold text-[#6e7770] dark:text-[#8c9c90] uppercase tracking-wider bg-[#f8f8f5] dark:bg-[#111813] border-b border-[#e5e2da] dark:border-[#212c24] sticky top-0 z-10">
                 <tr>
-                  <th className="px-4 py-3">Parcel ID</th>
-                  <th className="px-4 py-3">Survey No.</th>
-                  <th className="px-4 py-3">Village / Taluka</th>
-                  <th className="px-4 py-3">Landowner</th>
-                  <th className="px-4 py-3">Area (Acres)</th>
-                  <th className="px-4 py-3">Current Stage</th>
-                  <th className="px-4 py-3">Risk Level</th>
-                  <th className="px-4 py-3 text-right">Details</th>
+                  <th className="px-4 py-3">{t('parcels.colId')}</th>
+                  <th className="px-4 py-3">{t('parcels.colSurvey')}</th>
+                  <th className="px-4 py-3">{t('parcels.colVillage')}</th>
+                  <th className="px-4 py-3">{t('parcels.colOwner')}</th>
+                  <th className="px-4 py-3">{t('parcels.colArea')}</th>
+                  <th className="px-4 py-3">{t('parcels.colStage')}</th>
+                  <th className="px-4 py-3">{t('parcels.colRisk')}</th>
+                  <th className="px-4 py-3 text-right">{t('parcels.colActions')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#f2efe8] dark:divide-[#1a251e]">
@@ -267,7 +275,7 @@ export default function ParcelsPage() {
                           className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-[#1f4230] dark:text-[#82c499] hover:bg-[#eeebe3] dark:hover:bg-[#1f2c22] rounded transition-colors"
                         >
                           <Eye className="w-3.5 h-3.5" />
-                          <span>View</span>
+                          <span>{t('parcels.viewDossier')}</span>
                         </Link>
                       </td>
                     </tr>

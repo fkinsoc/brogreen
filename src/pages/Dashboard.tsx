@@ -27,6 +27,7 @@ import {
   Filter,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "../lib/i18n";
 
 // Enterprise Earth Palette (No Neon, No Vibe-Coded Fluff)
 const THEME = {
@@ -40,6 +41,7 @@ const THEME = {
 
 export default function Dashboard() {
   const parcels = staticParcels;
+  const { t } = useTranslation();
 
   const stats = useMemo(() => {
     const total = parcels.length;
@@ -144,10 +146,10 @@ export default function Dashboard() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-[#e5e2da] dark:border-[#212c24]">
           <div>
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#181c19] dark:text-[#eff3ef]">
-              Acquisition Risk Dashboard
+              {t('dashboard.title')}
             </h1>
             <p className="text-xs text-[#58615a] dark:text-[#95a398] mt-0.5">
-              Monitoring 92 active land parcels across Pune Highway Phase II.
+              {t('dashboard.subtitle')}
             </p>
           </div>
 
@@ -157,13 +159,13 @@ export default function Dashboard() {
               className="px-3 py-1.5 text-xs font-medium text-[#181c19] dark:text-[#eff3ef] bg-white dark:bg-[#151e18] border border-[#dcd7cd] dark:border-[#2b3a30] rounded-md hover:bg-[#f6f5f0] dark:hover:bg-[#1c2720] transition-colors shadow-2xs flex items-center gap-1.5"
             >
               <MapIcon className="w-3.5 h-3.5 text-[#37634b]" />
-              <span>Open GIS Map</span>
+              <span>{t('nav.gisMap')}</span>
             </Link>
             <Link
               to="/parcels"
               className="px-3 py-1.5 text-xs font-semibold text-white bg-[#1f4230] hover:bg-[#163324] rounded-md transition-colors shadow-2xs flex items-center gap-1.5"
             >
-              <span>View All Parcels</span>
+              <span>{t('nav.parcels')}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
@@ -191,14 +193,14 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
           <div className="p-4 rounded-lg bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26] shadow-2xs">
             <div className="text-xs font-medium text-[#657067] dark:text-[#8c9c90]">
-              Total Parcels
+              {t('dashboard.totalParcels')}
             </div>
             <div className="mt-2 flex items-baseline gap-2">
               <span className="text-2xl font-bold font-mono text-[#181c19] dark:text-[#eff3ef] tabular-nums">
                 {stats.total}
               </span>
               <span className="text-xs text-[#58615a] dark:text-[#95a398]">
-                ({stats.acquired} acquired)
+                ({stats.acquired} {t('dashboard.acquired').toLowerCase()})
               </span>
             </div>
             <div className="mt-2 text-[11px] text-[#58615a] dark:text-[#8e9c91]">
@@ -208,7 +210,7 @@ export default function Dashboard() {
 
           <div className="p-4 rounded-lg bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26] border-l-4 border-l-[#a63529] shadow-2xs">
             <div className="text-xs font-medium text-[#657067] dark:text-[#8c9c90] flex items-center justify-between">
-              <span>High Risk Parcels</span>
+              <span>{t('dashboard.highRisk')}</span>
               <AlertTriangle className="w-3.5 h-3.5 text-[#a63529]" />
             </div>
             <div className="mt-2 flex items-baseline gap-2">
@@ -226,14 +228,14 @@ export default function Dashboard() {
 
           <div className="p-4 rounded-lg bg-white dark:bg-[#141d17] border border-[#e5e2da] dark:border-[#222f26] border-l-4 border-l-[#a86927] shadow-2xs">
             <div className="text-xs font-medium text-[#657067] dark:text-[#8c9c90] flex items-center justify-between">
-              <span>Avg Predicted Delay</span>
+              <span>{t('dashboard.avgDelay')}</span>
               <Clock className="w-3.5 h-3.5 text-[#a86927]" />
             </div>
             <div className="mt-2 flex items-baseline gap-1">
               <span className="text-2xl font-bold font-mono text-[#181c19] dark:text-[#eff3ef] tabular-nums">
                 +{stats.avgDelay}
               </span>
-              <span className="text-xs text-[#58615a] dark:text-[#95a398] ml-1">days</span>
+              <span className="text-xs text-[#58615a] dark:text-[#95a398] ml-1">{t('dashboard.days')}</span>
             </div>
             <div className="mt-2 text-[11px] text-[#6e503a] dark:text-[#c49870]">
               Baseline milestone overrun

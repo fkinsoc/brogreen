@@ -4,9 +4,11 @@ import { useAuth } from "../lib/auth-context";
 import { db } from "../lib/firebase";
 import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import { Shield, ShieldAlert, CheckCircle2, UserCheck, UserX, Clock, AlertTriangle } from "lucide-react";
+import { useTranslation } from "../lib/i18n";
 
 export default function SettingsPage() {
   const { user, role } = useAuth();
+  const { t } = useTranslation();
   const [users, setUsers] = useState<any[]>([]);
   const [loadingUsers, setLoadingUsers] = useState(false);
   const [updateMessage, setUpdateMessage] = useState("");
@@ -66,37 +68,37 @@ export default function SettingsPage() {
         {/* Header */}
         <div className="pb-3 border-b border-[#212c24]">
           <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#eff3ef]">
-            Settings & Access Control
+            {t('settings.title')}
           </h1>
           <p className="text-xs text-[#95a398] mt-0.5">
-            Manage your account credentials and system authorization directory.
+            {t('settings.subtitle')}
           </p>
         </div>
 
         {/* User Profile Card */}
         <div className="rounded-lg border border-[#222f26] bg-[#141d17] p-4 sm:p-5 shadow-2xs">
           <h2 className="text-sm font-semibold text-[#eff3ef] mb-3 pb-2 border-b border-[#1d2920]">
-            Your Account Profile
+            {t('settings.userProfile')}
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
             <div>
-              <span className="text-[#8c9c90] block mb-1">Email Address</span>
+              <span className="text-[#8c9c90] block mb-1">{t('settings.emailCol')}</span>
               <span className="font-mono text-xs font-semibold text-[#eff3ef]">
                 {user?.email}
               </span>
             </div>
 
             <div>
-              <span className="text-[#8c9c90] block mb-1">Account Role & Status</span>
+              <span className="text-[#8c9c90] block mb-1">{t('settings.roleCol')} & {t('settings.statusCol')}</span>
               <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-[#18261e] border border-[#274031] rounded text-xs font-medium text-[#7fba96]">
                 <Shield className="w-3 h-3" />
                 <span>
                   {role === "admin"
-                    ? "Administrator (Full Access)"
+                    ? t('nav.administrator')
                     : role === "farmer"
-                    ? "Landowner (Farmer Access)"
-                    : "Field Operator"}
+                    ? t('nav.landowner')
+                    : t('nav.fieldOperator')}
                 </span>
               </span>
             </div>
@@ -110,11 +112,11 @@ export default function SettingsPage() {
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-[#e0a86b]" />
                 <h3 className="text-xs font-bold text-white uppercase tracking-wider">
-                  Pending Registrations Awaiting Approval ({pendingUsers.length})
+                  {t('settings.pendingApprovals')} ({pendingUsers.length})
                 </h3>
               </div>
               <span className="text-[11px] text-[#dca364]">
-                Direct access is blocked until approved below
+                {t('settings.directAccessBlocked')}
               </span>
             </div>
 
@@ -135,25 +137,25 @@ export default function SettingsPage() {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => handleUpdateUserStatus(pUser.id, "approved", "user")}
-                      className="px-2.5 py-1 text-xs font-semibold bg-[#1f4230] hover:bg-[#28573f] text-white rounded transition-colors flex items-center gap-1"
+                      className="px-2.5 py-1 text-xs font-semibold bg-[#1f4230] hover:bg-[#28573f] text-white rounded transition-colors flex items-center gap-1 cursor-pointer"
                     >
                       <UserCheck className="w-3 h-3 text-[#79c294]" />
-                      <span>Approve as Operator</span>
+                      <span>{t('settings.approveOperator')}</span>
                     </button>
 
                     <button
                       onClick={() => handleUpdateUserStatus(pUser.id, "approved", "farmer")}
-                      className="px-2.5 py-1 text-xs font-medium bg-[#1e2f24] hover:bg-[#253d2f] text-[#a5cbb4] rounded transition-colors"
+                      className="px-2.5 py-1 text-xs font-medium bg-[#1e2f24] hover:bg-[#253d2f] text-[#a5cbb4] rounded transition-colors cursor-pointer"
                     >
-                      Approve as Landowner
+                      {t('settings.approveLandowner')}
                     </button>
 
                     <button
                       onClick={() => handleUpdateUserStatus(pUser.id, "rejected")}
-                      className="px-2 py-1 text-xs text-[#e47668] hover:bg-[#381c18] rounded transition-colors"
+                      className="px-2 py-1 text-xs text-[#e47668] hover:bg-[#381c18] rounded transition-colors cursor-pointer"
                     >
                       <UserX className="w-3.5 h-3.5 inline mr-1" />
-                      Reject
+                      {t('settings.reject')}
                     </button>
                   </div>
                 </div>
@@ -168,7 +170,7 @@ export default function SettingsPage() {
             <div className="p-3.5 border-b border-[#212c24] flex items-center justify-between">
               <div>
                 <h2 className="text-sm font-semibold text-[#eff3ef]">
-                  User Access Directory & Governance
+                  {t('settings.userDirectory')}
                 </h2>
                 <p className="text-xs text-[#95a398]">
                   Manage authorization clearance, roles, and operational status.
@@ -192,11 +194,11 @@ export default function SettingsPage() {
                 <table className="w-full text-xs text-left">
                   <thead className="text-[11px] font-semibold text-[#8c9c90] uppercase tracking-wider bg-[#111813] border-b border-[#212c24]">
                     <tr>
-                      <th className="px-4 py-2.5">Email</th>
-                      <th className="px-4 py-2.5">Name</th>
-                      <th className="px-4 py-2.5">Status</th>
-                      <th className="px-4 py-2.5">Role</th>
-                      <th className="px-4 py-2.5 text-right">Action</th>
+                      <th className="px-4 py-2.5">{t('settings.emailCol')}</th>
+                      <th className="px-4 py-2.5">{t('settings.nameCol')}</th>
+                      <th className="px-4 py-2.5">{t('settings.statusCol')}</th>
+                      <th className="px-4 py-2.5">{t('settings.roleCol')}</th>
+                      <th className="px-4 py-2.5 text-right">{t('settings.actionCol')}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#1a251e]">

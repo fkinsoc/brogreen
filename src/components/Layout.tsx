@@ -21,6 +21,8 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import Chatbot from './Chatbot';
+import LanguageSelector from './LanguageSelector';
+import { useTranslation, TranslationKey } from '../lib/i18n';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../lib/auth-context';
 import { auth } from '../lib/firebase';
@@ -43,6 +45,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, role, status, isApproved, loading, refreshUser } = useAuth();
+  const { t } = useTranslation();
   const notificationRef = useRef<HTMLDivElement>(null);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -152,15 +155,15 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   };
 
   const navigation = [
-    { name: 'Dashboard', href: '/', icon: LayoutDashboard },
-    { name: 'Land Parcels', href: '/parcels', icon: FileText },
-    { name: 'GIS Map', href: '/map', icon: MapIcon },
-    { name: 'Early Warnings', href: '/alerts', icon: AlertTriangle },
-    { name: 'Farmer Portal', href: '/farmer-portal', icon: Compass },
-    { name: 'Data Upload', href: '/upload', icon: UploadCloud },
-    { name: 'Reports', href: '/reports', icon: FileText },
-    { name: 'System Logs', href: '/logs', icon: Activity },
-    { name: 'Settings', href: '/settings', icon: Settings },
+    { name: t('nav.dashboard'), href: '/', icon: LayoutDashboard },
+    { name: t('nav.parcels'), href: '/parcels', icon: FileText },
+    { name: t('nav.gisMap'), href: '/map', icon: MapIcon },
+    { name: t('nav.alerts'), href: '/alerts', icon: AlertTriangle },
+    { name: t('nav.farmerPortal'), href: '/farmer-portal', icon: Compass },
+    { name: t('nav.upload'), href: '/upload', icon: UploadCloud },
+    { name: t('nav.reports'), href: '/reports', icon: FileText },
+    { name: t('nav.logs'), href: '/logs', icon: Activity },
+    { name: t('nav.settings'), href: '/settings', icon: Settings },
   ];
 
   const notifications = [
@@ -206,17 +209,18 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           </div>
 
           <div className="flex items-center gap-3">
+            <LanguageSelector />
             <Link
               to="/farmer-portal"
               className="text-xs text-[#8cd0a5] hover:underline"
             >
-              Open Public Farmer Portal →
+              {t('auth.openPublicFarmer')} →
             </Link>
             <button
               onClick={handleLogout}
               className="px-3 py-1 text-xs text-[#8a9e91] hover:text-white bg-[#19261e] border border-[#263a2c] rounded transition-colors"
             >
-              Sign Out
+              {t('nav.signOut')}
             </button>
           </div>
         </div>
@@ -230,19 +234,19 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
             <div>
               <div className="inline-block px-2.5 py-0.5 rounded text-[11px] font-semibold bg-[#2c2217] text-[#e0a86b] border border-[#523e25] mb-2 uppercase tracking-wide">
-                Account Status: Pending Administrator Approval
+                {t('auth.pendingTitle')}
               </div>
               <h2 className="text-xl font-bold text-white tracking-tight">
-                Authorization Required
+                {t('auth.pendingHeading')}
               </h2>
               <p className="text-xs text-[#8ca193] mt-2 leading-relaxed">
-                Thank you for registering with Bro Foresee. To protect sensitive land acquisition records, survey valuations, and cadastral datasets, your account is awaiting administrative clearance.
+                {t('auth.pendingDesc')}
               </p>
             </div>
 
             <div className="bg-[#0e1611] border border-[#1e2f24] rounded-lg p-3.5 text-xs text-left space-y-1.5 font-mono">
               <div className="flex justify-between text-[#82998a]">
-                <span>Registered Email:</span>
+                <span>{t('auth.email')}:</span>
                 <span className="text-white font-semibold">{user.email}</span>
               </div>
               <div className="flex justify-between text-[#82998a]">
@@ -262,15 +266,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 className="w-full py-2 px-4 rounded-md bg-[#1f4230] hover:bg-[#28573f] text-white text-xs font-semibold tracking-wide transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm disabled:opacity-50"
               >
                 <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin' : ''}`} />
-                <span>{refreshing ? 'Verifying status...' : 'Check Approval Status'}</span>
+                <span>{refreshing ? t('auth.verifyingStatus') : t('auth.checkApproval')}</span>
               </button>
 
               <div className="p-3 bg-[#17251c] border border-[#273e2f] rounded-lg text-xs text-[#95b0a0] leading-relaxed">
-                🌾 Need to look up your personal land parcel or compensation? You can access the public{" "}
-                <Link to="/farmer-portal" className="text-[#8ed4a7] font-semibold underline">
-                  Farmer Portal
-                </Link>{" "}
-                directly without waiting for admin authorization.
+                🌾 {t('auth.farmerNotice')}
               </div>
             </div>
           </div>
@@ -299,10 +299,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             </div>
             <div>
               <div className="font-semibold text-sm tracking-tight text-white leading-none">
-                Bro Foresee
+                {t('nav.brand')}
               </div>
               <div className="text-[10px] text-[#869b8d] font-normal mt-0.5">
-                Land Acquisition System
+                {t('nav.brandSubtitle')}
               </div>
             </div>
           </Link>
@@ -353,15 +353,15 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               <div className="text-xs font-medium text-white truncate">{user.email}</div>
               <div className="text-[10px] text-[#7d9485] truncate">
                 {role === 'admin'
-                  ? 'Administrator'
+                  ? t('nav.administrator')
                   : role === 'farmer'
-                  ? 'Landowner'
-                  : 'Field Operator'}
+                  ? t('nav.landowner')
+                  : t('nav.fieldOperator')}
               </div>
             </div>
             <button
               onClick={handleLogout}
-              title="Sign Out"
+              title={t('nav.signOut')}
               className="p-1 text-[#7d9485] hover:text-white hover:bg-[#1a2b20] rounded transition-colors"
             >
               <LogOut className="w-3.5 h-3.5" />
@@ -370,9 +370,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
           <div className="flex items-center justify-between px-1 text-[11px] text-[#697d70]">
             <Link to="/legal" className="hover:text-white transition-colors">
-              Terms & Privacy
+              {t('nav.termsPrivacy')}
             </Link>
-            <span>v2.4 Production</span>
+            <span>{t('nav.version')}</span>
           </div>
         </div>
       </aside>
@@ -392,10 +392,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
             {/* Breadcrumb Trail */}
             <div className="flex items-center gap-1.5 text-xs text-[#95a398]">
-              <span className="hidden sm:inline">Pune Project</span>
+              <span className="hidden sm:inline">{t('header.project')}</span>
               <ChevronRight className="w-3.5 h-3.5 opacity-50 hidden sm:inline" />
               <span className="font-semibold text-[#eff3ef]">
-                {currentNav ? currentNav.name : 'Dashboard'}
+                {currentNav ? currentNav.name : t('nav.dashboard')}
               </span>
             </div>
           </div>
@@ -403,7 +403,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           {/* Right Header Actions */}
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Functional Search Input with Dropdown */}
-            <div className="relative w-56 sm:w-64" ref={searchContainerRef}>
+            <div className="relative w-52 sm:w-64" ref={searchContainerRef}>
               <form onSubmit={handleSearchSubmit}>
                 <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#828c84]" />
                 <input
@@ -414,7 +414,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     setShowSearchResults(true);
                   }}
                   onFocus={() => setShowSearchResults(true)}
-                  placeholder="Search parcels, survey, owner..."
+                  placeholder={t('header.searchPlaceholder')}
                   className="w-full pl-8 pr-2.5 py-1 text-xs bg-[#18231c] border border-[#28372d] rounded-md text-[#eff3ef] placeholder-[#828c84] focus:outline-none focus:ring-1 focus:ring-[#37634b] focus:border-[#37634b]"
                 />
               </form>
@@ -430,7 +430,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     className="absolute right-0 left-0 mt-1.5 bg-[#141d17] border border-[#27382c] rounded-lg shadow-xl overflow-hidden z-50 divide-y divide-[#1b271f]"
                   >
                     <div className="px-3 py-1.5 text-[10px] font-semibold text-[#7e9587] uppercase tracking-wider bg-[#0f1712] flex items-center justify-between">
-                      <span>Matching Parcels ({matchingParcels.length})</span>
+                      <span>{t('header.matchingParcels')} ({matchingParcels.length})</span>
                       <button
                         onClick={() => setShowSearchResults(false)}
                         className="text-[#657a6d] hover:text-white"
@@ -442,7 +442,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     <div className="max-h-60 overflow-y-auto">
                       {matchingParcels.length === 0 ? (
                         <div className="p-3 text-xs text-[#7e9587] text-center">
-                          No matching parcels for "{searchQuery}"
+                          {t('header.noMatches')} "{searchQuery}"
                         </div>
                       ) : (
                         matchingParcels.slice(0, 5).map((p) => (
@@ -485,7 +485,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                           onClick={handleSearchSubmit}
                           className="text-xs text-[#82c499] hover:underline font-medium"
                         >
-                          View all results in Land Registry →
+                          {t('header.viewInRegistry')}
                         </button>
                       </div>
                     )}
@@ -493,6 +493,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 )}
               </AnimatePresence>
             </div>
+
+            {/* Language Selector */}
+            <LanguageSelector />
 
             {/* Notifications Menu */}
             <div className="relative" ref={notificationRef}>
@@ -516,7 +519,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                   >
                     <div className="p-3 border-b border-[#212c24] flex items-center justify-between bg-[#111813]">
                       <div className="text-xs font-semibold text-[#eff3ef]">
-                        Notifications
+                        {t('header.notifications')}
                       </div>
                       <button
                         onClick={() => setShowNotifications(false)}
@@ -557,7 +560,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                         onClick={() => setShowNotifications(false)}
                         className="text-xs font-medium text-[#82c499] hover:underline"
                       >
-                        View all warnings →
+                        {t('header.allWarnings')}
                       </Link>
                     </div>
                   </motion.div>
@@ -571,7 +574,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               disabled={isExporting}
               className="px-3 py-1.5 text-xs font-semibold bg-[#1f4230] hover:bg-[#173325] text-white rounded-md transition-colors shadow-2xs disabled:opacity-50 whitespace-nowrap"
             >
-              {isExporting ? 'Exporting...' : 'Export Report'}
+              {isExporting ? t('nav.exporting') : t('nav.exportReport')}
             </button>
           </div>
         </header>

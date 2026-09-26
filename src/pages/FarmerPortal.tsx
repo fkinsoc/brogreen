@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { staticParcels, Parcel } from "../lib/data";
 import { db } from "../lib/firebase";
 import { collection, addDoc } from "firebase/firestore";
+import { useTranslation } from "../lib/i18n";
+import LanguageSelector from "../components/LanguageSelector";
 import {
   Search,
   CheckCircle2,
@@ -21,6 +23,7 @@ import {
 } from "lucide-react";
 
 export default function FarmerPortal() {
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedParcel, setSelectedParcel] = useState<Parcel | null>(staticParcels[0]);
   
@@ -46,12 +49,12 @@ export default function FarmerPortal() {
   }, [searchQuery]);
 
   const stages = [
-    { title: "Joint Measurement Survey", desc: "Boundary & crop inspection", step: 1 },
-    { title: "Section 11(1) Notification", desc: "Intended acquisition notice", step: 2 },
-    { title: "Section 15 Objections", desc: "60-day hearing of claims", step: 3 },
-    { title: "Section 19(1) Declaration", desc: "Final acquisition declaration", step: 4 },
-    { title: "Section 23 Award", desc: "Fair compensation calculation", step: 5 },
-    { title: "Possession & Disbursal", desc: "DBT payout & land transfer", step: 6 },
+    { title: t('dashboard.stage1'), desc: "Boundary & crop inspection", step: 1 },
+    { title: t('dashboard.stage2'), desc: "Intended acquisition notice", step: 2 },
+    { title: t('dashboard.stage3'), desc: "60-day hearing of claims", step: 3 },
+    { title: t('dashboard.stage4'), desc: "Final acquisition declaration", step: 4 },
+    { title: t('dashboard.stage5'), desc: "Fair compensation calculation", step: 5 },
+    { title: t('dashboard.stage6'), desc: "DBT payout & land transfer", step: 6 },
   ];
 
   const getStageStep = (stage: string) => {
@@ -121,23 +124,24 @@ export default function FarmerPortal() {
             </Link>
             <div>
               <div className="font-semibold text-sm text-white flex items-center gap-2">
-                <span>Bro Foresee — शेतकरी माहिती पोर्टल</span>
+                <span>{t('farmer.portalTitle')}</span>
                 <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-[#244231] text-[#86d4a5] border border-[#325d45]">
-                  Public Cadastre
+                  {t('farmer.publicCadastre')}
                 </span>
               </div>
               <div className="text-[11px] text-[#8a9e91]">
-                Farmer & Landowner Acquisition Status Lookup (RFCTLARR Act 2013)
+                {t('farmer.tagline')}
               </div>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
+            <LanguageSelector />
             <Link
               to="/login"
               className="text-xs text-[#9eb5a7] hover:text-white transition-colors"
             >
-              Officer Login →
+              {t('farmer.officerLogin')}
             </Link>
           </div>
         </div>
@@ -149,13 +153,13 @@ export default function FarmerPortal() {
         <div className="rounded-xl border border-[#23382b] bg-[#142019] p-5 sm:p-7 shadow-lg">
           <div className="max-w-3xl">
             <span className="text-xs font-semibold uppercase tracking-wider text-[#79c294] block mb-1">
-              Search Land Records & Compensation
+              {t('farmer.searchHeading')}
             </span>
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white mb-2">
-              Check Your Survey Number & Acquisition Dossier
+              {t('farmer.searchHeading')}
             </h1>
             <p className="text-xs text-[#9eb3a6] leading-relaxed mb-4">
-              Enter your Land Survey Number, Gat Number, Village, or Landowner Name as recorded in the 7/12 extract to inspect status, hearing dates, and solatium award.
+              {t('farmer.searchPrompt')}
             </p>
 
             {/* Search Input */}
@@ -165,14 +169,14 @@ export default function FarmerPortal() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search by Survey No. (e.g. 45/2A, 112/1), Village (Bhosari), or Landowner Name..."
+                placeholder={t('farmer.searchPlaceholder')}
                 className="w-full pl-10 pr-4 py-2.5 text-xs bg-[#0b130e] border border-[#2b4435] rounded-lg text-white placeholder-[#687d71] focus:outline-none focus:ring-1 focus:ring-[#79c294] focus:border-[#79c294]"
               />
             </div>
 
             {/* Quick Suggestions Chips */}
             <div className="mt-3 flex flex-wrap items-center gap-1.5 text-xs text-[#8a9e91]">
-              <span className="text-[11px]">Popular Sample Surveys:</span>
+              <span className="text-[11px]">{t('farmer.popularSamples')}</span>
               {["45/2A (Bhosari)", "112/1 (Chinchwad)", "88/3 (Wakad)", "142/5 (Hadapsar)"].map(
                 (sample) => {
                   const sNo = sample.split(" ")[0];
@@ -197,7 +201,7 @@ export default function FarmerPortal() {
             {matchingParcels.length > 0 && (
               <div className="mt-3 bg-[#0d1611] border border-[#273f31] rounded-lg overflow-hidden divide-y divide-[#1b2b22]">
                 <div className="p-2 text-[11px] font-semibold text-[#869e90] bg-[#101b14]">
-                  Matching Cadastral Records ({matchingParcels.length}):
+                  {t('farmer.matchingRecords')} ({matchingParcels.length}):
                 </div>
                 {matchingParcels.slice(0, 5).map((p) => (
                   <button
@@ -212,11 +216,11 @@ export default function FarmerPortal() {
                       <span className="font-semibold text-white">Survey No. {p.surveyNumber}</span>
                       <span className="text-[#889d90] ml-2">· {p.village} Village ({p.district})</span>
                       <div className="text-[11px] text-[#718578] mt-0.5">
-                        Landowner: {p.landOwner} · Area: {p.areaAcres} Acres
+                        {t('farmer.registeredOwner')}: {p.landOwner} · {t('farmer.acqArea')}: {p.areaAcres} {t('common.acres')}
                       </div>
                     </div>
                     <span className="text-xs text-[#82c99d] font-medium flex items-center gap-1">
-                      Inspect Dossier →
+                      {t('farmer.inspectDossier')}
                     </span>
                   </button>
                 ))}
@@ -256,24 +260,24 @@ export default function FarmerPortal() {
               {/* Key Indicators Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4 text-xs">
                 <div className="p-3 rounded-lg bg-[#0d1611] border border-[#1b2b21]">
-                  <span className="text-[11px] text-[#7d9385] block mb-1">Registered Landowner</span>
+                  <span className="text-[11px] text-[#7d9385] block mb-1">{t('farmer.registeredOwner')}</span>
                   <span className="font-semibold text-white text-sm">{selectedParcel.landOwner}</span>
                 </div>
 
                 <div className="p-3 rounded-lg bg-[#0d1611] border border-[#1b2b21]">
-                  <span className="text-[11px] text-[#7d9385] block mb-1">Acquisition Land Area</span>
-                  <span className="font-semibold text-white text-sm">{selectedParcel.areaAcres} Acres</span>
+                  <span className="text-[11px] text-[#7d9385] block mb-1">{t('farmer.acqArea')}</span>
+                  <span className="font-semibold text-white text-sm">{selectedParcel.areaAcres} {t('common.acres')}</span>
                 </div>
 
                 <div className="p-3 rounded-lg bg-[#0d1611] border border-[#1b2b21]">
-                  <span className="text-[11px] text-[#7d9385] block mb-1">Estimated Solatium Award</span>
+                  <span className="text-[11px] text-[#7d9385] block mb-1">{t('farmer.estimatedAward')}</span>
                   <span className="font-semibold text-[#8ed4a7] text-sm tabular-nums">
                     ₹{(estimatedCompensation / 100000).toFixed(1)} Lakhs
                   </span>
                 </div>
 
                 <div className="p-3 rounded-lg bg-[#0d1611] border border-[#1b2b21]">
-                  <span className="text-[11px] text-[#7d9385] block mb-1">Objection / Hearing Status</span>
+                  <span className="text-[11px] text-[#7d9385] block mb-1">{t('farmer.objectionStatus')}</span>
                   <span className="font-semibold text-white text-sm">
                     {selectedParcel.objectionStatus || "Nominal"}
                   </span>
@@ -284,10 +288,10 @@ export default function FarmerPortal() {
             {/* Stepper Timeline: RFCTLARR Act 2013 Stages */}
             <div className="rounded-xl border border-[#213529] bg-[#131d17] p-5 shadow-sm">
               <h3 className="text-sm font-bold text-white mb-1">
-                Land Acquisition Statutory Milestone Tracker
+                {t('farmer.stageTracker')}
               </h3>
               <p className="text-xs text-[#8ca193] mb-4">
-                Mandatory procedural progression mandated by the Land Acquisition, Rehabilitation and Resettlement Act.
+                {t('farmer.stageTrackerDesc')}
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-6 gap-2">
@@ -334,30 +338,30 @@ export default function FarmerPortal() {
               <div className="rounded-xl border border-[#213529] bg-[#131d17] p-5 shadow-sm space-y-3">
                 <div className="flex items-center justify-between pb-2 border-b border-[#1c2e23]">
                   <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                    <span>Fair Compensation Award Estimate</span>
+                    <span>{t('farmer.compHeading')}</span>
                   </h3>
                   <span className="text-[11px] text-[#7fa38c]">RFCTLARR Sec. 26-30</span>
                 </div>
 
                 <div className="space-y-2 text-xs divide-y divide-[#18261e]">
                   <div className="flex justify-between pt-1">
-                    <span className="text-[#8ca193]">Acquisition Area</span>
-                    <span className="font-semibold text-white font-mono">{selectedParcel.areaAcres} Acres</span>
+                    <span className="text-[#8ca193]">{t('farmer.area')}</span>
+                    <span className="font-semibold text-white font-mono">{selectedParcel.areaAcres} {t('common.acres')}</span>
                   </div>
                   <div className="flex justify-between pt-1">
-                    <span className="text-[#8ca193]">Base Ready Reckoner Rate</span>
-                    <span className="font-semibold text-white font-mono">₹32,00,000 / Acre</span>
+                    <span className="text-[#8ca193]">{t('farmer.readyReckonerRate')}</span>
+                    <span className="font-semibold text-white font-mono">₹32,00,000 / {t('common.acres')}</span>
                   </div>
                   <div className="flex justify-between pt-1">
-                    <span className="text-[#8ca193]">Rural Multiplication Factor</span>
+                    <span className="text-[#8ca193]">{t('farmer.ruralFactor')}</span>
                     <span className="font-semibold text-white font-mono">1.50×</span>
                   </div>
                   <div className="flex justify-between pt-1">
-                    <span className="text-[#8ca193]">100% Solatium (Sec. 30(1))</span>
+                    <span className="text-[#8ca193]">{t('farmer.solatiumBonus')}</span>
                     <span className="font-semibold text-white font-mono">+100% Statutory Bonus</span>
                   </div>
                   <div className="flex justify-between pt-2 border-t border-[#264433] text-sm">
-                    <span className="font-bold text-white">Total Estimated Award</span>
+                    <span className="font-bold text-white">{t('farmer.totalCompensation')}</span>
                     <span className="font-bold text-[#8ed4a7] font-mono">
                       ₹{(estimatedCompensation / 100000).toFixed(2)} Lakhs
                     </span>
@@ -365,7 +369,7 @@ export default function FarmerPortal() {
                 </div>
 
                 <div className="p-2.5 rounded-lg bg-[#0e1611] border border-[#1e3025] text-[11px] text-[#91a89a] leading-relaxed">
-                  💡 <strong>Payment Disbursal:</strong> Compensation awards are credited via Direct Benefit Transfer (DBT) directly into the landowner's Aadhaar-linked bank account upon verification of original 7/12 extract and KYC documents.
+                  💡 {t('farmer.dbtNotice')}
                 </div>
               </div>
 
@@ -374,7 +378,7 @@ export default function FarmerPortal() {
                 <div className="flex items-center justify-between pb-2 border-b border-[#1c2e23]">
                   <h3 className="text-sm font-bold text-white flex items-center gap-2">
                     <Calendar className="w-4 h-4 text-[#8ed4a7]" />
-                    <span>Public Hearing & Notice Board</span>
+                    <span>{t('farmer.hearings')}</span>
                   </h3>
                   <span className="text-[11px] text-[#8ed4a7]">Haveli Sub-Division</span>
                 </div>
@@ -382,21 +386,21 @@ export default function FarmerPortal() {
                 <div className="space-y-3 text-xs">
                   <div className="p-3 rounded-lg bg-[#18271e] border border-[#284534]">
                     <div className="font-semibold text-white flex items-center justify-between">
-                      <span>Section 15 Objections Hearing</span>
+                      <span>{t('farmer.hearingNotice')}</span>
                       <span className="text-[11px] text-[#e5aa65] font-semibold">Scheduled: 15 Oct 2026</span>
                     </div>
                     <div className="text-[11px] text-[#93a99c] mt-1">
-                      Venue: Office of the Special Land Acquisition Officer (SLAO 2), New Administrative Building, Camp, Pune.
+                      {t('farmer.venue')}
                     </div>
                   </div>
 
                   <div className="p-3 rounded-lg bg-[#0e1611] border border-[#1e3025]">
-                    <div className="font-semibold text-white">Documents Required at Hearing:</div>
+                    <div className="font-semibold text-white">{t('farmer.reqDocs')}</div>
                     <ul className="list-disc list-inside text-[11px] text-[#8ca193] mt-1 space-y-0.5">
-                      <li>Original 7/12 Extract (Satbara Utara) dated within 3 months</li>
-                      <li>8A Khatedar holding extract</li>
-                      <li>Aadhaar Card & PAN Card copy</li>
-                      <li>Cancelled Cheque / Bank Passbook for DBT compensation</li>
+                      <li>{t('farmer.doc1')}</li>
+                      <li>{t('farmer.doc2')}</li>
+                      <li>{t('farmer.doc3')}</li>
+                      <li>{t('farmer.doc4')}</li>
                     </ul>
                   </div>
                 </div>
@@ -407,10 +411,10 @@ export default function FarmerPortal() {
             <div className="rounded-xl border border-[#213529] bg-[#131d17] p-5 shadow-sm">
               <div className="pb-3 border-b border-[#1c2e23] mb-4">
                 <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                  <span>तक्रार किंवा आक्षेप नोंदवा / File Objection or Grievance</span>
+                  <span>{t('farmer.fileGrievance')}</span>
                 </h3>
                 <p className="text-xs text-[#8ca193] mt-0.5">
-                  If there is any boundary dispute, uncounted trees/wells, or compensation disagreement for Survey No. {selectedParcel.surveyNumber}, lodge your formal submission here.
+                  {t('farmer.grievanceDesc', { survey: selectedParcel.surveyNumber })}
                 </p>
               </div>
 
@@ -418,22 +422,22 @@ export default function FarmerPortal() {
                 <div className="p-4 rounded-lg bg-[#14291c] border border-[#295437] text-center space-y-2">
                   <CheckCircle2 className="w-8 h-8 text-[#79c294] mx-auto" />
                   <div className="text-sm font-bold text-white">
-                    Grievance Registered Successfully
+                    {t('farmer.successTitle')}
                   </div>
                   <div className="text-xs text-[#9eb5a6]">
-                    Your Grievance Reference Token is:{" "}
+                    {t('farmer.successRef')}{" "}
                     <strong className="font-mono text-white text-sm bg-[#1c3827] px-2 py-0.5 rounded border border-[#2e5e3f]">
                       {grievanceSubmitted}
                     </strong>
                   </div>
                   <p className="text-[11px] text-[#7fa38c]">
-                    A notice will be issued by the Competent Authority within 14 working days. You can present this token at the Sub-Divisional Office.
+                    {t('farmer.successNotice')}
                   </p>
                   <button
                     onClick={() => setGrievanceSubmitted(null)}
                     className="mt-2 px-3 py-1 text-xs bg-[#1f4230] hover:bg-[#28573f] text-white rounded transition-colors"
                   >
-                    Submit Another Inquiry
+                    {t('farmer.submitAnother')}
                   </button>
                 </div>
               ) : (
@@ -441,7 +445,7 @@ export default function FarmerPortal() {
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div>
                       <label className="block text-[11px] font-medium text-[#8ca193] mb-1">
-                        Landowner / Claimant Name *
+                        {t('farmer.claimantName')}
                       </label>
                       <input
                         type="text"
@@ -455,7 +459,7 @@ export default function FarmerPortal() {
 
                     <div>
                       <label className="block text-[11px] font-medium text-[#8ca193] mb-1">
-                        Mobile Phone Number *
+                        {t('farmer.mobilePhone')}
                       </label>
                       <input
                         type="tel"
@@ -469,7 +473,7 @@ export default function FarmerPortal() {
 
                     <div>
                       <label className="block text-[11px] font-medium text-[#8ca193] mb-1">
-                        Objection Category *
+                        {t('farmer.objectionCategory')}
                       </label>
                       <select
                         value={objectionType}
@@ -488,7 +492,7 @@ export default function FarmerPortal() {
 
                   <div>
                     <label className="block text-[11px] font-medium text-[#8ca193] mb-1">
-                      Detailed Grounds of Objection / तक्रारीचे सविस्तर वर्णन *
+                      {t('farmer.detailedDescription')}
                     </label>
                     <textarea
                       rows={3}
@@ -507,10 +511,10 @@ export default function FarmerPortal() {
                     <button
                       type="submit"
                       disabled={grievanceSubmitting}
-                      className="px-4 py-2 bg-[#1f4230] hover:bg-[#27553e] text-white font-semibold rounded-md transition-colors flex items-center gap-1.5 shadow-sm disabled:opacity-50"
+                      className="px-4 py-2 bg-[#1f4230] hover:bg-[#27553e] text-white font-semibold rounded-md transition-colors flex items-center gap-1.5 shadow-sm disabled:opacity-50 cursor-pointer"
                     >
                       <Send className="w-3.5 h-3.5" />
-                      <span>{grievanceSubmitting ? "Lodging..." : "Submit Formal Objection"}</span>
+                      <span>{grievanceSubmitting ? t('farmer.submitting') : t('farmer.submitBtn')}</span>
                     </button>
                   </div>
                 </form>
